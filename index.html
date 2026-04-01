@@ -2,9 +2,9 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
 <title>Contract Management Platform — Demo</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=DM+Sans:wght@500;600;700&display=swap" rel="stylesheet"/>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
@@ -17,59 +17,98 @@
   --b1:#E5E7EB;--b2:#F3F4F6;--b3:#F9FAFB;
   --wh:#FFFFFF;
   --r:6px;--rl:10px;
+  --sb:216px;
 }
-html,body{height:100%;font-family:'Inter',sans-serif;font-size:13px;color:var(--t1);background:#F0F2F5;line-height:1.5}
+html,body{height:100%;font-family:'Inter',sans-serif;font-size:13px;color:var(--t1);background:#F0F2F5;line-height:1.5;-webkit-tap-highlight-color:transparent}
+
+/* ── APP SHELL ── */
 .app{display:flex;height:100vh;background:var(--wh);overflow:hidden;position:relative}
-.sb{width:216px;min-width:216px;background:var(--g);display:flex;flex-direction:column;z-index:1;flex-shrink:0}
+
+/* ── SIDEBAR ── */
+.sb{width:var(--sb);min-width:var(--sb);background:var(--g);display:flex;flex-direction:column;z-index:20;flex-shrink:0;transition:transform .25s ease}
 .sb-hd{padding:20px 16px 15px;border-bottom:1px solid rgba(255,255,255,0.12)}
 .sb-dept{font-size:9.5px;font-weight:600;color:rgba(255,255,255,0.5);letter-spacing:.9px;text-transform:uppercase;margin-bottom:3px}
 .sb-name{font-size:15px;font-weight:700;color:#fff;font-family:'DM Sans',sans-serif}
 .sb-badge{display:inline-block;margin-top:6px;font-size:10px;color:rgba(255,255,255,0.7);background:rgba(255,255,255,0.12);padding:2px 10px;border-radius:20px}
 .ng{padding:10px 0 2px}
 .nl{font-size:9px;font-weight:600;color:rgba(255,255,255,0.35);padding:5px 14px 3px;letter-spacing:1px;text-transform:uppercase}
-.ni{display:flex;align-items:center;gap:9px;padding:9px 14px;cursor:pointer;color:rgba(255,255,255,0.65);font-size:12.5px;border-left:2.5px solid transparent;transition:background .12s;user-select:none}
-.ni:hover{background:rgba(255,255,255,0.08);color:#fff}
+.ni{display:flex;align-items:center;gap:9px;padding:11px 14px;cursor:pointer;color:rgba(255,255,255,0.65);font-size:12.5px;border-left:2.5px solid transparent;transition:background .12s;user-select:none;-webkit-user-select:none}
+.ni:active{background:rgba(255,255,255,0.15)}
 .ni.on{background:rgba(255,255,255,0.14);color:#fff;border-left-color:#6EE7B7;font-weight:500}
 .nico{width:16px;font-size:13px;opacity:.8;text-align:center;flex-shrink:0}
 .nct{margin-left:auto;background:rgba(255,255,255,0.18);color:rgba(255,255,255,.85);font-size:9.5px;padding:1px 7px;border-radius:10px;font-weight:500}
 .sb-ft{margin-top:auto;padding:13px 14px;border-top:1px solid rgba(255,255,255,0.12);display:flex;align-items:center;gap:9px}
 .av{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;flex-shrink:0}
 .av0{background:rgba(255,255,255,0.2);color:#fff}
-.avg{background:var(--gl);color:var(--gt)}
-.avb{background:var(--bb);color:var(--bl)}
-.ava{background:var(--ab);color:#92400E}
+
+/* ── MAIN ── */
 .main{flex:1;display:flex;flex-direction:column;overflow:hidden;background:var(--b3);min-width:0}
-.tb{background:var(--wh);padding:12px 24px;border-bottom:1px solid var(--b1);display:flex;align-items:center;gap:10px;flex-shrink:0}
-.tbt{font-size:15px;font-weight:600;color:var(--t1);font-family:'DM Sans',sans-serif}
-.tbc{font-size:12px;color:var(--t4);margin-left:2px}
-.tbr{margin-left:auto;display:flex;gap:8px;align-items:center}
-.btn{padding:6px 13px;font-size:12px;border-radius:var(--r);cursor:pointer;border:1px solid var(--b1);background:var(--wh);color:var(--t2);font-weight:500;font-family:'Inter',sans-serif;transition:background .12s}
-.btn:hover{background:var(--b2)}
+.tb{background:var(--wh);padding:12px 16px;border-bottom:1px solid var(--b1);display:flex;align-items:center;gap:8px;flex-shrink:0}
+.tb-menu{display:none;background:none;border:none;cursor:pointer;padding:4px;color:var(--t2);flex-shrink:0}
+.tb-menu svg{width:20px;height:20px;display:block}
+.tbt{font-size:14px;font-weight:600;color:var(--t1);font-family:'DM Sans',sans-serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tbc{font-size:11px;color:var(--t4);display:none}
+.tbr{margin-left:auto;display:flex;gap:6px;align-items:center;flex-shrink:0}
+.btn{padding:7px 13px;font-size:12px;border-radius:var(--r);cursor:pointer;border:1px solid var(--b1);background:var(--wh);color:var(--t2);font-weight:500;font-family:'Inter',sans-serif;transition:background .12s;white-space:nowrap}
+.btn:active{background:var(--b2)}
 .btnp{background:var(--g);color:#fff;border-color:var(--g)}
-.btnp:hover{background:var(--gm)}
-.btnx{padding:4px 10px;font-size:11.5px}
-.ct{flex:1;overflow-y:auto;padding:20px 24px}
+.btnp:active{background:var(--gm)}
+.btnx{padding:6px 11px;font-size:11.5px}
+.ct{flex:1;overflow-y:auto;padding:14px 14px 80px;-webkit-overflow-scrolling:touch}
 .sec{display:none}.sec.on{display:block}
-.mr{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-bottom:18px}
-.mc{background:var(--wh);border:1px solid var(--b1);border-radius:var(--rl);padding:14px 16px;position:relative;overflow:hidden}
+
+/* ── MOBILE OVERLAY ── */
+.sb-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:19}
+
+/* ── BOTTOM NAV (mobile) ── */
+.bnav{display:none;position:fixed;bottom:0;left:0;right:0;background:var(--wh);border-top:1px solid var(--b1);z-index:18;padding:0 0 env(safe-area-inset-bottom)}
+.bnav-inner{display:flex}
+.bni{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:10px 4px 8px;cursor:pointer;color:var(--t4);font-size:9.5px;font-weight:500;border:none;background:none;-webkit-tap-highlight-color:transparent}
+.bni.on{color:var(--g)}
+.bni svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.bni-dot{position:relative}
+.bni-dot::after{content:'';position:absolute;top:-2px;right:-4px;width:7px;height:7px;background:#F59E0B;border-radius:50%;border:1.5px solid #fff}
+
+/* ── METRICS ── */
+.mr{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-bottom:14px}
+.mc{background:var(--wh);border:1px solid var(--b1);border-radius:var(--rl);padding:13px 14px;position:relative;overflow:hidden}
 .mc::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}
 .mcg::before{background:var(--g)}.mcb::before{background:#3B82F6}.mca::before{background:#F59E0B}.mcr::before{background:#EF4444}
-.ml{font-size:11px;color:var(--t3);font-weight:500;margin-bottom:5px;text-transform:uppercase;letter-spacing:.4px}
-.mv{font-size:22px;font-weight:700;line-height:1.1;font-family:'DM Sans',sans-serif}
-.ms{font-size:11px;color:var(--t4);margin-top:4px}
+.ml{font-size:10.5px;color:var(--t3);font-weight:500;margin-bottom:4px;text-transform:uppercase;letter-spacing:.4px}
+.mv{font-size:20px;font-weight:700;line-height:1.1;font-family:'DM Sans',sans-serif}
+.ms{font-size:10.5px;color:var(--t4);margin-top:3px}
 .vg{color:var(--g)}.vb{color:#2563EB}.va{color:var(--am)}.vr{color:var(--rd)}
-.g2{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:14px;margin-bottom:16px}
+
+/* ── CARDS ── */
+.g2{display:grid;grid-template-columns:1fr;gap:12px;margin-bottom:14px}
 .card{background:var(--wh);border:1px solid var(--b1);border-radius:var(--rl);overflow:hidden}
-.chd{padding:12px 16px;border-bottom:1px solid var(--b1);display:flex;align-items:center;justify-content:space-between}
+.chd{padding:12px 14px;border-bottom:1px solid var(--b1);display:flex;align-items:center;justify-content:space-between}
 .cht{font-size:13px;font-weight:600;color:var(--t1);font-family:'DM Sans',sans-serif}
 .chs{font-size:11px;color:var(--t4)}
-.cb{padding:14px 16px}
-table{width:100%;border-collapse:collapse;font-size:12.5px}
+.cb{padding:12px 14px}
+
+/* ── TABLES — scrollable on mobile ── */
+.tbl-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
+table{width:100%;border-collapse:collapse;font-size:12.5px;min-width:480px}
 thead tr{background:var(--b3)}
-th{text-align:left;font-weight:600;font-size:10.5px;color:var(--t3);padding:8px 12px;border-bottom:1px solid var(--b1);text-transform:uppercase;letter-spacing:.5px;white-space:nowrap}
-td{padding:10px 12px;border-bottom:1px solid #F3F4F6;color:var(--t2);vertical-align:middle}
+th{text-align:left;font-weight:600;font-size:10px;color:var(--t3);padding:8px 10px;border-bottom:1px solid var(--b1);text-transform:uppercase;letter-spacing:.4px;white-space:nowrap}
+td{padding:10px 10px;border-bottom:1px solid #F3F4F6;color:var(--t2);vertical-align:middle}
 tbody tr:last-child td{border-bottom:none}
-tbody tr:hover td{background:var(--b3);cursor:pointer}
+tbody tr:active td{background:var(--b3)}
+
+/* ── MOBILE CARDS (replaces table on small screens) ── */
+.mcard{display:none;flex-direction:column;gap:0}
+.mc-row{padding:12px 14px;border-bottom:1px solid var(--b1);cursor:pointer}
+.mc-row:last-child{border-bottom:none}
+.mc-row:active{background:var(--b3)}
+.mc-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:6px}
+.mc-title{font-weight:600;font-size:12.5px;color:var(--t1)}
+.mc-sub{font-size:11px;color:var(--t4);margin-top:2px}
+.mc-meta{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.mc-val{font-size:12px;font-weight:600;color:var(--t1)}
+.mc-info{font-size:11px;color:var(--t3)}
+
+/* ── STATUS PILLS ── */
 .pill{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:20px;font-size:11px;font-weight:500;white-space:nowrap}
 .pill::before{content:'';width:5px;height:5px;border-radius:50%;flex-shrink:0}
 .pa{background:var(--gl);color:var(--gt)}.pa::before{background:var(--g)}
@@ -77,120 +116,194 @@ tbody tr:hover td{background:var(--b3);cursor:pointer}
 .pe{background:var(--rb);color:var(--rd)}.pe::before{background:#EF4444}
 .pd{background:var(--bb);color:var(--bl)}.pd::before{background:#3B82F6}
 .pf{background:var(--b2);color:var(--t3)}.pf::before{background:var(--t4)}
+
+/* ── PROGRESS ── */
 .pgw{background:var(--b1);border-radius:4px;height:5px;overflow:hidden}
 .pg{height:100%;border-radius:4px}
 .pgg{background:var(--g)}.pgb{background:#3B82F6}.pga{background:#F59E0B}.pgr{background:#9CA3AF}
-.ali{display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid var(--b1);font-size:12px}
+
+/* ── ALERTS ── */
+.ali{display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid var(--b1);font-size:12.5px}
 .ali:last-child{border-bottom:none}
 .ald{width:7px;height:7px;border-radius:50%;margin-top:4px;flex-shrink:0}
 .alt{flex:1;color:var(--t2);line-height:1.45}
 .alt strong{font-weight:600;color:var(--t1)}
 .altime{font-size:10.5px;color:var(--t4);white-space:nowrap}
-.tabs{display:flex;border-bottom:1px solid var(--b1);background:var(--b3);padding:0 16px;overflow-x:auto}
-.tab{padding:9px 14px;font-size:12px;cursor:pointer;color:var(--t3);border-bottom:2px solid transparent;margin-bottom:-1px;transition:color .12s;white-space:nowrap;flex-shrink:0}
-.tab:hover{color:var(--t1)}
+
+/* ── TABS ── */
+.tabs{display:flex;border-bottom:1px solid var(--b1);background:var(--b3);padding:0 12px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tab{padding:10px 12px;font-size:12px;cursor:pointer;color:var(--t3);border-bottom:2px solid transparent;margin-bottom:-1px;white-space:nowrap;flex-shrink:0}
 .tab.on{color:var(--g);border-bottom-color:var(--g);font-weight:500}
-.tbc2{padding:16px}
-.dlhd{padding:14px 18px;border-bottom:1px solid var(--b1);display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
-.dltt{font-size:14px;font-weight:600;font-family:'DM Sans',sans-serif;margin-bottom:3px}
-.dlsb{font-size:12px;color:var(--t3)}
-.dlg{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-bottom:18px}
-.df label{font-size:10px;font-weight:600;color:var(--t4);text-transform:uppercase;letter-spacing:.5px;display:block;margin-bottom:3px}
-.df span{font-size:13px;color:var(--t1)}
-.mlr{display:flex;align-items:center;gap:12px;padding:11px 0;border-bottom:1px solid var(--b1);font-size:12.5px}
+.tbc2{padding:14px}
+
+/* ── CONTRACT DETAIL ── */
+.dlhd{padding:12px 14px;border-bottom:1px solid var(--b1);display:flex;align-items:flex-start;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.dltt{font-size:13px;font-weight:600;font-family:'DM Sans',sans-serif;margin-bottom:2px}
+.dlsb{font-size:11.5px;color:var(--t3)}
+.dlg{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px}
+.df label{font-size:10px;font-weight:600;color:var(--t4);text-transform:uppercase;letter-spacing:.4px;display:block;margin-bottom:3px}
+.df span{font-size:12.5px;color:var(--t1)}
+.mlr{display:flex;align-items:flex-start;gap:10px;padding:11px 0;border-bottom:1px solid var(--b1);font-size:12.5px}
 .mlr:last-child{border-bottom:none}
-.mln{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;flex-shrink:0}
+.mln{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;flex-shrink:0;margin-top:1px}
 .mnd{background:var(--gl);color:var(--gt)}.mna{background:var(--ab);color:#92400E}.mnw{background:var(--b2);color:var(--t4)}
-.pr{display:flex;align-items:center;gap:12px;padding:11px 0;border-bottom:1px solid var(--b1);font-size:12.5px}
+.pr{display:flex;align-items:flex-start;gap:10px;padding:11px 0;border-bottom:1px solid var(--b1);font-size:12.5px}
 .pr:last-child{border-bottom:none}
-.prt{font-weight:500;color:var(--t1)}.prs{font-size:11px;color:var(--t4);margin-top:1px}
-.notice{padding:9px 13px;border-radius:var(--r);font-size:12px;margin-bottom:14px;display:flex;gap:8px;align-items:flex-start;border-left:3px solid}
+.prt{font-weight:500;color:var(--t1)}.prs{font-size:11px;color:var(--t4);margin-top:2px}
+
+/* ── NOTICES ── */
+.notice{padding:10px 12px;border-radius:var(--r);font-size:12px;margin-bottom:12px;display:flex;gap:8px;align-items:flex-start;border-left:3px solid;line-height:1.5}
 .nw{background:#FFFBEB;color:#92400E;border-color:#F59E0B}
 .ni2{background:#EFF6FF;color:#1E40AF;border-color:#3B82F6}
 .ns{background:#ECFDF5;color:var(--gt);border-color:var(--g)}
-.srch{display:flex;align-items:center;gap:8px;background:var(--wh);border:1px solid var(--b1);border-radius:var(--r);padding:0 11px;margin-bottom:12px}
-.srch input{border:none;background:transparent;padding:8px 0;font-size:12.5px;flex:1;color:var(--t1);outline:none;font-family:'Inter',sans-serif}
-.frow{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
-.fc{padding:4px 11px;border-radius:20px;font-size:11.5px;cursor:pointer;border:1px solid var(--b1);background:var(--wh);color:var(--t3);transition:all .12s;user-select:none}
-.fc:hover{border-color:#9CA3AF;color:var(--t1)}
+
+/* ── SEARCH & FILTERS ── */
+.srch{display:flex;align-items:center;gap:8px;background:var(--wh);border:1px solid var(--b1);border-radius:var(--r);padding:0 11px;margin-bottom:10px}
+.srch input{border:none;background:transparent;padding:10px 0;font-size:13px;flex:1;color:var(--t1);outline:none;font-family:'Inter',sans-serif}
+.frow{display:flex;gap:6px;flex-wrap:nowrap;margin-bottom:12px;overflow-x:auto;padding-bottom:4px;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.frow::-webkit-scrollbar{display:none}
+.fc{padding:6px 12px;border-radius:20px;font-size:11.5px;cursor:pointer;border:1px solid var(--b1);background:var(--wh);color:var(--t3);flex-shrink:0;user-select:none}
 .fc.on{background:var(--g);color:#fff;border-color:var(--g);font-weight:500}
-.back{font-size:12px;color:var(--g);cursor:pointer;margin-bottom:12px;display:inline-flex;align-items:center;gap:5px;font-weight:500}
-.back:hover{text-decoration:underline}
+.back{font-size:12.5px;color:var(--g);cursor:pointer;margin-bottom:12px;display:inline-flex;align-items:center;gap:5px;font-weight:500;padding:4px 0}
+
+/* ── MODALS ── */
 .ov{display:none;position:fixed;inset:0;background:rgba(17,24,39,.5);z-index:40}
-.modal{display:none;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:var(--wh);border:1px solid var(--b1);border-radius:var(--rl);z-index:50;box-shadow:0 16px 48px rgba(0,0,0,.18);max-height:90vh;overflow-y:auto}
-.mhd{padding:16px 20px;border-bottom:1px solid var(--b1);display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:var(--wh);z-index:1}
+.modal{display:none;position:fixed;background:var(--wh);border:1px solid var(--b1);border-radius:var(--rl);z-index:50;box-shadow:0 16px 48px rgba(0,0,0,.18);max-height:92vh;overflow-y:auto;width:min(680px,96vw);top:50%;left:50%;transform:translate(-50%,-50%)}
+.mhd{padding:14px 16px;border-bottom:1px solid var(--b1);display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:var(--wh);z-index:1}
 .mtt{font-size:14px;font-weight:600;font-family:'DM Sans',sans-serif}
-.mx{width:26px;height:26px;border-radius:4px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--t3);font-size:18px;line-height:1}
-.mx:hover{background:var(--b2)}
-.mbd{padding:18px 20px}
-.mac{padding:14px 20px;border-top:1px solid var(--b1);display:flex;justify-content:flex-end;gap:8px;position:sticky;bottom:0;background:var(--wh)}
-#formModal{width:min(680px,95vw)}
-.fg{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+.mx{width:28px;height:28px;border-radius:4px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--t3);font-size:18px;line-height:1}
+.mx:active{background:var(--b2)}
+.mbd{padding:16px}
+.mac{padding:12px 16px;border-top:1px solid var(--b1);display:flex;justify-content:flex-end;gap:8px;position:sticky;bottom:0;background:var(--wh)}
+#apModal{width:min(360px,96vw)}
+
+/* ── ADD CONTRACT FORM ── */
+.fg{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
 .fg3{grid-template-columns:1fr 1fr 1fr}
 .fg1{grid-template-columns:1fr}
 .fl{display:flex;flex-direction:column;gap:4px}
-.fl label{font-size:11px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.4px}
+.fl label{font-size:10.5px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.4px}
 .fl label .req{color:#EF4444;margin-left:2px}
-.fl input,.fl select,.fl textarea{padding:8px 10px;border:1px solid var(--b1);border-radius:var(--r);font-size:12.5px;color:var(--t1);background:var(--wh);font-family:'Inter',sans-serif;outline:none;transition:border-color .12s}
+.fl input,.fl select,.fl textarea{padding:9px 10px;border:1px solid var(--b1);border-radius:var(--r);font-size:13px;color:var(--t1);background:var(--wh);font-family:'Inter',sans-serif;outline:none;transition:border-color .12s;-webkit-appearance:none}
 .fl input:focus,.fl select:focus,.fl textarea:focus{border-color:var(--g);box-shadow:0 0 0 2px rgba(27,94,66,.08)}
 .fl textarea{resize:vertical;min-height:60px}
 .req-note{font-size:11px;color:var(--rd);margin-top:4px}
-.chk{display:flex;align-items:center;gap:7px;font-size:12.5px;color:var(--t2);cursor:pointer;padding:10px 0}
-.chk input{width:14px;height:14px;accent-color:var(--g)}
-.form-sec{font-size:10.5px;font-weight:700;color:var(--t4);text-transform:uppercase;letter-spacing:.8px;margin:14px 0 10px;padding-bottom:6px;border-bottom:1px solid var(--b1)}
-#apModal{width:min(360px,95vw)}
-.aps{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--b1);font-size:12.5px}
+.chk{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--t2);cursor:pointer;padding:10px 0}
+.chk input{width:16px;height:16px;accent-color:var(--g);flex-shrink:0}
+.form-sec{font-size:10px;font-weight:700;color:var(--t4);text-transform:uppercase;letter-spacing:.8px;margin:14px 0 10px;padding-bottom:6px;border-bottom:1px solid var(--b1)}
+
+/* ── APPROVAL MODAL ── */
+.aps{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--b1);font-size:12.5px}
 .aps:last-child{border-bottom:none}
-.apc{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;flex-shrink:0}
+.apc{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;flex-shrink:0}
 .apd{background:var(--gl);color:var(--gt)}.app2{background:var(--ab);color:#92400E}.apw{background:var(--b2);color:var(--t4)}
-.ai-btn{position:fixed;bottom:24px;right:24px;z-index:30;width:50px;height:50px;border-radius:50%;background:var(--g);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 18px rgba(27,94,66,.4);transition:transform .15s,box-shadow .15s}
-.ai-btn:hover{transform:scale(1.07);box-shadow:0 6px 24px rgba(27,94,66,.5)}
+
+/* ── AI BUTTON & PANEL ── */
+.ai-btn{position:fixed;bottom:74px;right:16px;z-index:30;width:48px;height:48px;border-radius:50%;background:var(--g);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 16px rgba(27,94,66,.4)}
 .ai-btn svg{width:22px;height:22px;fill:none;stroke:#fff;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
-.ai-panel{display:none;position:fixed;bottom:84px;right:24px;z-index:35;width:min(340px,92vw);background:var(--wh);border:1px solid var(--b1);border-radius:var(--rl);box-shadow:0 12px 40px rgba(0,0,0,.15);flex-direction:column;overflow:hidden}
+.ai-panel{display:none;position:fixed;bottom:130px;right:12px;z-index:35;width:min(330px,94vw);background:var(--wh);border:1px solid var(--b1);border-radius:var(--rl);box-shadow:0 12px 40px rgba(0,0,0,.15);flex-direction:column;overflow:hidden}
 .ai-panel.open{display:flex}
-.ai-hd{background:var(--g);padding:12px 14px;display:flex;align-items:center;gap:10px;flex-shrink:0}
+.ai-hd{background:var(--g);padding:11px 13px;display:flex;align-items:center;gap:9px;flex-shrink:0}
 .ai-hd-dot{width:8px;height:8px;border-radius:50%;background:#6EE7B7;animation:pulse 2s infinite;flex-shrink:0}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
 .ai-hd-info{flex:1}
 .ai-hd-title{font-size:13px;font-weight:600;color:#fff;font-family:'DM Sans',sans-serif}
 .ai-hd-sub{font-size:10px;color:rgba(255,255,255,.6)}
-.ai-close{background:none;border:none;color:rgba(255,255,255,.7);font-size:20px;cursor:pointer;line-height:1;padding:0;width:24px;height:24px;display:flex;align-items:center;justify-content:center}
-.ai-msgs{flex:1;overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:10px;max-height:280px;min-height:160px}
-.msg{max-width:86%}
+.ai-close{background:none;border:none;color:rgba(255,255,255,.7);font-size:22px;cursor:pointer;line-height:1;padding:0;width:26px;height:26px;display:flex;align-items:center;justify-content:center}
+.ai-msgs{flex:1;overflow-y:auto;padding:10px;display:flex;flex-direction:column;gap:8px;max-height:240px;min-height:120px;-webkit-overflow-scrolling:touch}
+.msg{max-width:88%}
 .msg-ai{align-self:flex-start}
 .msg-user{align-self:flex-end}
-.msg-bubble{padding:9px 12px;border-radius:10px;font-size:12.5px;line-height:1.5}
+.msg-bubble{padding:8px 11px;border-radius:10px;font-size:12.5px;line-height:1.5}
 .mb-ai{background:var(--b2);color:var(--t1);border-radius:2px 10px 10px 10px}
 .mb-user{background:var(--g);color:#fff;border-radius:10px 2px 10px 10px}
-.msg-time{font-size:10px;color:var(--t4);margin-top:3px;padding:0 2px}
+.msg-time{font-size:10px;color:var(--t4);margin-top:2px;padding:0 2px}
 .msg-user .msg-time{text-align:right}
-.ai-chips{padding:8px 12px;display:flex;flex-wrap:wrap;gap:6px;border-top:1px solid var(--b1);flex-shrink:0}
-.chip{padding:4px 9px;border-radius:20px;font-size:11px;background:var(--gl);color:var(--gt);cursor:pointer;border:1px solid #A7F3D0;transition:background .12s;font-weight:500;user-select:none}
-.chip:hover{background:#D1FAE5}
-.ai-inp{display:flex;gap:8px;padding:10px 12px;border-top:1px solid var(--b1);align-items:center;flex-shrink:0}
-.ai-inp input{flex:1;border:1px solid var(--b1);border-radius:var(--r);padding:7px 10px;font-size:12px;outline:none;font-family:'Inter',sans-serif;transition:border-color .12s;min-width:0}
+.ai-chips{padding:8px 10px;display:flex;flex-wrap:wrap;gap:5px;border-top:1px solid var(--b1);flex-shrink:0}
+.chip{padding:5px 9px;border-radius:20px;font-size:11px;background:var(--gl);color:var(--gt);cursor:pointer;border:1px solid #A7F3D0;font-weight:500;user-select:none}
+.ai-inp{display:flex;gap:7px;padding:9px 10px;border-top:1px solid var(--b1);align-items:center;flex-shrink:0}
+.ai-inp input{flex:1;border:1px solid var(--b1);border-radius:var(--r);padding:8px 10px;font-size:12px;outline:none;font-family:'Inter',sans-serif;min-width:0}
 .ai-inp input:focus{border-color:var(--g)}
-.ai-send{width:32px;height:32px;border-radius:var(--r);background:var(--g);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background .12s}
-.ai-send:hover{background:var(--gm)}
+.ai-send{width:34px;height:34px;border-radius:var(--r);background:var(--g);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .ai-send svg{width:14px;height:14px;fill:none;stroke:#fff;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
-.typing{display:flex;gap:4px;align-items:center;padding:8px 12px;background:var(--b2);border-radius:10px;width:fit-content}
+.typing{display:flex;gap:4px;align-items:center;padding:7px 10px;background:var(--b2);border-radius:10px;width:fit-content}
 .typing span{width:5px;height:5px;border-radius:50%;background:var(--t4);animation:blink 1.2s infinite}
 .typing span:nth-child(2){animation-delay:.2s}
 .typing span:nth-child(3){animation-delay:.4s}
 @keyframes blink{0%,80%,100%{opacity:.2}40%{opacity:1}}
-.chw{position:relative;height:190px}
-.leg{display:flex;flex-wrap:wrap;gap:10px;font-size:11px;color:var(--t3);padding:0 2px}
+
+/* ── CHARTS ── */
+.chw{position:relative;height:180px}
+.leg{display:flex;flex-wrap:wrap;gap:8px;font-size:11px;color:var(--t3);padding:0 2px}
 .li{display:flex;align-items:center;gap:5px}
 .ls{width:9px;height:9px;border-radius:2px;flex-shrink:0}
-.rkpi{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-bottom:16px}
-.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--g);color:#fff;padding:10px 20px;border-radius:var(--r);font-size:12.5px;font-weight:500;z-index:60;display:none;box-shadow:0 4px 16px rgba(0,0,0,.15);white-space:nowrap}
-@media(max-width:900px){.mr{grid-template-columns:1fr 1fr}.g2{grid-template-columns:1fr}.dlg{grid-template-columns:1fr 1fr}}
-@media(max-width:600px){.sb{width:180px;min-width:180px}.mr{grid-template-columns:1fr 1fr}.tb{padding:10px 14px}.ct{padding:14px}}
+.rkpi{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:14px}
+
+/* ── TOAST ── */
+.toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:var(--g);color:#fff;padding:10px 18px;border-radius:var(--r);font-size:12.5px;font-weight:500;z-index:60;display:none;box-shadow:0 4px 16px rgba(0,0,0,.15);white-space:nowrap;max-width:90vw;text-align:center}
+
+/* ══════════════════════════════════
+   DESKTOP overrides (≥768px)
+══════════════════════════════════ */
+@media(min-width:768px){
+  .tb{padding:12px 22px}
+  .tbc{display:inline}
+  .ct{padding:18px 22px 18px}
+  .mr{grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-bottom:18px}
+  .g2{grid-template-columns:minmax(0,1.4fr) minmax(0,1fr)}
+  .rkpi{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .dlg{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .fg3{grid-template-columns:1fr 1fr 1fr}
+  .tb-menu{display:none!important}
+  .bnav{display:none!important}
+  .ai-btn{bottom:24px;right:22px}
+  .ai-panel{bottom:84px;right:22px}
+  .toast{bottom:20px}
+  table{min-width:unset}
+  .mcard{display:none!important}
+  .tbl-wrap table{display:table}
+  .mv{font-size:22px}
+  .mc{padding:14px 16px}
+}
+
+/* ══════════════════════════════════
+   MOBILE (< 768px)
+══════════════════════════════════ */
+@media(max-width:767px){
+  :root{--sb:260px}
+  .sb{position:fixed;top:0;left:0;bottom:0;transform:translateX(-100%);z-index:20}
+  .sb.open{transform:translateX(0)}
+  .sb-overlay.open{display:block}
+  .tb-menu{display:flex!important;align-items:center;justify-content:center}
+  .bnav{display:block}
+  .tbr .btn:not(.btnp){display:none}
+  .g2{grid-template-columns:1fr}
+  .dlg{grid-template-columns:1fr 1fr}
+  .dlhd{flex-direction:column;gap:8px}
+  .dlhd>div:last-child{display:flex;width:100%}
+  .dlhd>div:last-child .btn{flex:1;text-align:center}
+  .fg3{grid-template-columns:1fr 1fr}
+  .rkpi{grid-template-columns:1fr 1fr 1fr}
+  /* hide desktop table, show mobile cards */
+  .tbl-wrap{display:none}
+  .mcard{display:flex}
+  /* alerts card full width on mobile */
+  .chw{height:160px}
+  .mv{font-size:20px}
+}
+@media(max-width:400px){
+  .rkpi{grid-template-columns:1fr 1fr}
+  .fg{grid-template-columns:1fr}
+  .fg3{grid-template-columns:1fr}
+  .dlg{grid-template-columns:1fr}
+}
 </style>
 </head>
 <body>
 <div class="app" id="app">
 <div class="ov" id="ov" onclick="closeAll()"></div>
+<div class="sb-overlay" id="sbOv" onclick="closeSb()"></div>
 <div class="toast" id="toast"></div>
 
 <!-- APPROVAL MODAL -->
@@ -214,28 +327,27 @@ tbody tr:hover td{background:var(--b3);cursor:pointer}
   <div class="mhd"><span class="mtt">Add New Contract</span><span class="mx" onclick="closeAll()">&#215;</span></div>
   <div class="mbd">
     <div class="form-sec">Contract Identification</div>
-    <div class="fg fg1"><div class="fl"><label>Contract Name <span class="req">*</span></label><input id="fName" placeholder="e.g. Irrigation System Installation &#8212; Nkomazi LM"/></div></div>
-    <div class="fg fg3">
+    <div class="fg fg1"><div class="fl"><label>Contract Name <span class="req">*</span></label><input id="fName" placeholder="e.g. Irrigation System &#8212; Nkomazi LM"/></div></div>
+    <div class="fg">
       <div class="fl"><label>Contract Number <span class="req">*</span></label><input id="fNo" placeholder="ALA/000/24/MP"/></div>
       <div class="fl"><label>Project Number <span class="req">*</span></label><input id="fProj" placeholder="PROJ/000/24/MP"/></div>
-      <div class="fl"><label>Contract Type <span class="req">*</span></label>
-        <select id="fType"><option value="">Select type...</option><option>Infrastructure</option><option>Services</option><option>Supply</option><option>Legal Advisors</option><option>Consultancy</option><option>Construction</option></select>
-      </div>
     </div>
+    <div class="fg fg1"><div class="fl"><label>Contract Type <span class="req">*</span></label>
+      <select id="fType"><option value="">Select type...</option><option>Infrastructure</option><option>Services</option><option>Supply</option><option>Legal Advisors</option><option>Consultancy</option><option>Construction</option></select>
+    </div></div>
     <div class="form-sec">Financial Details</div>
-    <div class="fg fg3">
+    <div class="fg">
       <div class="fl"><label>Contract Value (R) <span class="req">*</span></label><input id="fVal" type="number" placeholder="0.00" min="0"/></div>
       <div class="fl"><label>Variation Approved %</label><input id="fVar" type="number" placeholder="0" min="0"/></div>
-      <div class="fl"><label>Extension (months)</label><input id="fExt" type="number" placeholder="0" min="0"/></div>
     </div>
     <div class="form-sec">Dates &amp; Status</div>
-    <div class="fg fg3">
+    <div class="fg">
       <div class="fl"><label>Start Date <span class="req">*</span></label><input id="fStart" type="date"/></div>
       <div class="fl"><label>End Date <span class="req">*</span></label><input id="fEnd" type="date"/></div>
-      <div class="fl"><label>Contract Status <span class="req">*</span></label>
-        <select id="fStatus"><option value="">Select status...</option><option>Draft</option><option>Active</option><option>Pending</option><option>Suspended</option><option>Terminated</option></select>
-      </div>
     </div>
+    <div class="fg fg1"><div class="fl"><label>Contract Status <span class="req">*</span></label>
+      <select id="fStatus"><option value="">Select status...</option><option>Draft</option><option>Active</option><option>Pending</option><option>Suspended</option><option>Terminated</option></select>
+    </div></div>
     <div class="form-sec">Service Provider &amp; Funding</div>
     <div class="fg">
       <div class="fl"><label>Service Provider <span class="req">*</span></label>
@@ -249,9 +361,9 @@ tbody tr:hover td{background:var(--b3);cursor:pointer}
       <div class="fl"><label>District</label>
         <select id="fDist"><option value="">Select district...</option><option>Ehlanzeni</option><option>Gert Sibande</option><option>Nkangala</option><option>Head Office</option></select>
       </div>
-      <div class="fl"><label>Contract Description</label><input id="fDesc" placeholder="Brief description of scope of work"/></div>
+      <div class="fl"><label>Contract Description</label><input id="fDesc" placeholder="Brief scope description"/></div>
     </div>
-    <div class="fg fg1"><div class="fl"><label>Remarks</label><textarea id="fRem" placeholder="Any additional notes or remarks..."></textarea></div></div>
+    <div class="fg fg1"><div class="fl"><label>Remarks</label><textarea id="fRem" placeholder="Additional notes..."></textarea></div></div>
     <label class="chk"><input type="checkbox" id="fRet"> Is Retention Applicable</label>
     <div class="req-note">All fields marked * are mandatory</div>
     <div id="formErr" style="display:none;margin-top:10px" class="notice nw">Please complete all mandatory fields before saving.</div>
@@ -260,7 +372,7 @@ tbody tr:hover td{background:var(--b3);cursor:pointer}
 </div>
 
 <!-- SIDEBAR -->
-<div class="sb">
+<div class="sb" id="sb">
   <div class="sb-hd">
     <div class="sb-dept">Department of Agriculture</div>
     <div class="sb-name">Contract Manager</div>
@@ -293,12 +405,15 @@ tbody tr:hover td{background:var(--b3);cursor:pointer}
 <!-- MAIN -->
 <div class="main">
   <div class="tb">
-    <div><span class="tbt" id="ptitle">Dashboard</span><span class="tbc" id="pcrumb">&nbsp;&middot; Contract &amp; Project Management &middot; FY 2024/25</span></div>
+    <button class="tb-menu" onclick="openSb()" aria-label="Menu">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+    <div style="min-width:0;flex:1"><span class="tbt" id="ptitle">Dashboard</span><span class="tbc" id="pcrumb">&nbsp;&middot; Contract &amp; Project Management &middot; FY 2024/25</span></div>
     <div class="tbr">
       <button class="btn btnx" onclick="go('approvals',document.querySelectorAll('.ni')[7])" style="display:flex;align-items:center;gap:5px">
-        <span style="width:7px;height:7px;background:#F59E0B;border-radius:50%;display:inline-block"></span>&nbsp;5 Pending Approvals
+        <span style="width:7px;height:7px;background:#F59E0B;border-radius:50%;display:inline-block"></span>&nbsp;5 Approvals
       </button>
-      <button class="btn btnp btnx" onclick="openForm()">+ New Contract</button>
+      <button class="btn btnp btnx" onclick="openForm()">+ New</button>
     </div>
   </div>
   <div class="ct">
@@ -307,23 +422,30 @@ tbody tr:hover td{background:var(--b3);cursor:pointer}
     <div class="sec on" id="s-dash">
       <div class="mr">
         <div class="mc mcg"><div class="ml">Active Contracts</div><div class="mv vg" id="dashActive">12</div><div class="ms">&#8593; 3 from last quarter</div></div>
-        <div class="mc mcb"><div class="ml">Total Contract Value</div><div class="mv vb">R 47.2M</div><div class="ms">Across all categories</div></div>
+        <div class="mc mcb"><div class="ml">Total Value</div><div class="mv vb">R 47.2M</div><div class="ms">All categories</div></div>
         <div class="mc mca"><div class="ml">Pending Approvals</div><div class="mv va">5</div><div class="ms">Requires attention</div></div>
-        <div class="mc mcr"><div class="ml">Expiring in 30 Days</div><div class="mv vr">3</div><div class="ms">Action required</div></div>
+        <div class="mc mcr"><div class="ml">Expiring Soon</div><div class="mv vr">3</div><div class="ms">Within 30 days</div></div>
       </div>
       <div class="g2">
         <div class="card">
           <div class="chd"><span class="cht">Recent Contracts</span><span class="chs">Last 30 days</span></div>
-          <table><thead><tr><th>Contract</th><th>Provider</th><th>Value</th><th>Status</th></tr></thead>
+          <div class="tbl-wrap"><table><thead><tr><th>Contract</th><th>Provider</th><th>Value</th><th>Status</th></tr></thead>
           <tbody id="dashTable">
             <tr onclick="showDetail()"><td><div style="font-weight:600;font-size:12px">ALA/488/23/MP</div><div style="font-size:11px;color:var(--t4)">Irrigation &middot; Nkomazi LM</div></td><td>JK Civil Works</td><td style="font-weight:600">R 3.4M</td><td><span class="pill pa">Active</span></td></tr>
-            <tr onclick="showDetail()"><td><div style="font-weight:600;font-size:12px">ALA/532/21/MP</div><div style="font-size:11px;color:var(--t4)">Solar Install &middot; Bushbuckridge</div></td><td>SolarPro (Pty) Ltd</td><td style="font-weight:600">R 8.1M</td><td><span class="pill pp">Pending</span></td></tr>
+            <tr onclick="showDetail()"><td><div style="font-weight:600;font-size:12px">ALA/532/21/MP</div><div style="font-size:11px;color:var(--t4)">Solar &middot; Bushbuckridge</div></td><td>SolarPro (Pty) Ltd</td><td style="font-weight:600">R 8.1M</td><td><span class="pill pp">Pending</span></td></tr>
             <tr onclick="showDetail()"><td><div style="font-weight:600;font-size:12px">ALA/301/22/MP</div><div style="font-size:11px;color:var(--t4)">Fencing &middot; Gert Sibande</div></td><td>Boundary Fencing CC</td><td style="font-weight:600">R 1.2M</td><td><span class="pill pa">Active</span></td></tr>
             <tr onclick="showDetail()"><td><div style="font-weight:600;font-size:12px">ALA/190/24/MP</div><div style="font-size:11px;color:var(--t4)">Borehole &middot; Ehlanzeni</div></td><td>WaterDrill SA</td><td style="font-weight:600">R 780K</td><td><span class="pill pd">Completed</span></td></tr>
-          </tbody></table>
+          </tbody></table></div>
+          <!-- mobile cards -->
+          <div class="mcard" id="dashMcard">
+            <div class="mc-row" onclick="showDetail()"><div class="mc-top"><div><div class="mc-title">ALA/488/23/MP</div><div class="mc-sub">Irrigation &middot; JK Civil Works</div></div><span class="pill pa">Active</span></div><div class="mc-meta"><span class="mc-val">R 3.4M</span><span class="mc-info">Nkomazi LM</span></div></div>
+            <div class="mc-row" onclick="showDetail()"><div class="mc-top"><div><div class="mc-title">ALA/532/21/MP</div><div class="mc-sub">Solar &middot; SolarPro (Pty) Ltd</div></div><span class="pill pp">Pending</span></div><div class="mc-meta"><span class="mc-val">R 8.1M</span><span class="mc-info">Bushbuckridge</span></div></div>
+            <div class="mc-row" onclick="showDetail()"><div class="mc-top"><div><div class="mc-title">ALA/301/22/MP</div><div class="mc-sub">Fencing &middot; Boundary Fencing CC</div></div><span class="pill pa">Active</span></div><div class="mc-meta"><span class="mc-val">R 1.2M</span><span class="mc-info">Gert Sibande</span></div></div>
+            <div class="mc-row" onclick="showDetail()"><div class="mc-top"><div><div class="mc-title">ALA/190/24/MP</div><div class="mc-sub">Borehole &middot; WaterDrill SA</div></div><span class="pill pd">Completed</span></div><div class="mc-meta"><span class="mc-val">R 780K</span><span class="mc-info">Ehlanzeni</span></div></div>
+          </div>
         </div>
         <div class="card">
-          <div class="chd"><span class="cht">System Alerts</span><span class="chs">Requires action</span></div>
+          <div class="chd"><span class="cht">System Alerts</span><span class="chs">Action needed</span></div>
           <div class="cb" style="padding-top:6px;padding-bottom:6px">
             <div class="ali"><div class="ald" style="background:#EF4444"></div><div class="alt"><strong>ALA/532/21/MP</strong> expires in 14 days &mdash; extension required</div><div class="altime">Today</div></div>
             <div class="ali"><div class="ald" style="background:#EF4444"></div><div class="alt"><strong>ALA/301/22/MP</strong> milestone payment overdue by 7 days</div><div class="altime">2d ago</div></div>
@@ -335,7 +457,7 @@ tbody tr:hover td{background:var(--b3);cursor:pointer}
       </div>
       <div class="g2">
         <div class="card"><div class="chd"><span class="cht">Contract Value by Category</span></div><div class="cb"><div class="chw"><canvas id="c1"></canvas></div><div class="leg" style="margin-top:8px"><div class="li"><div class="ls" style="background:#1B5E42"></div>Irrigation R18.4M</div><div class="li"><div class="ls" style="background:#3B82F6"></div>Solar R12.6M</div><div class="li"><div class="ls" style="background:#F59E0B"></div>Borehole R9.2M</div><div class="li"><div class="ls" style="background:#EC4899"></div>Fencing R4.8M</div><div class="li"><div class="ls" style="background:#8B5CF6"></div>Other R2.2M</div></div></div></div>
-        <div class="card"><div class="chd"><span class="cht">Milestone Completion</span></div><div class="cb"><div style="display:flex;flex-direction:column;gap:11px">
+        <div class="card"><div class="chd"><span class="cht">Milestone Completion</span></div><div class="cb"><div style="display:flex;flex-direction:column;gap:10px">
           <div><div style="display:flex;justify-content:space-between;font-size:11.5px;margin-bottom:4px"><span>ALA/488/23/MP</span><span style="font-weight:600;color:var(--g)">68%</span></div><div class="pgw"><div class="pg pgg" style="width:68%"></div></div></div>
           <div><div style="display:flex;justify-content:space-between;font-size:11.5px;margin-bottom:4px"><span>ALA/532/21/MP</span><span style="font-weight:600;color:#2563EB">45%</span></div><div class="pgw"><div class="pg pgb" style="width:45%"></div></div></div>
           <div><div style="display:flex;justify-content:space-between;font-size:11.5px;margin-bottom:4px"><span>ALA/301/22/MP</span><span style="font-weight:600;color:var(--g)">92%</span></div><div class="pgw"><div class="pg pgg" style="width:92%"></div></div></div>
@@ -347,40 +469,49 @@ tbody tr:hover td{background:var(--b3);cursor:pointer}
 
     <!-- CONTRACTS -->
     <div class="sec" id="s-contracts">
-      <div class="srch"><span style="color:var(--t4);font-size:14px">&#128269;</span><input placeholder="Search by contract name, number or service provider&hellip;"/></div>
+      <div class="srch"><span style="color:var(--t4);font-size:14px">&#128269;</span><input placeholder="Search contracts&hellip;"/></div>
       <div class="frow"><div class="fc on">All (<span id="allCt">18</span>)</div><div class="fc">Active (12)</div><div class="fc">Pending (3)</div><div class="fc">Expired (2)</div><div class="fc">Completed (4)</div><div class="fc">CASP</div><div class="fc">DRDAR</div></div>
-      <div class="card"><table>
-        <thead><tr><th>Contract Name</th><th>No.</th><th>Provider</th><th>Value</th><th>End Date</th><th>Progress</th><th>Status</th></tr></thead>
-        <tbody id="ctTable">
-          <tr onclick="showDetail()"><td><div style="font-weight:600;font-size:12px">Irrigation System &mdash; Nkomazi LM</div><div style="font-size:11px;color:var(--t4)">CASP &middot; Ehlanzeni</div></td><td style="font-size:11.5px;color:var(--t3)">ALA/488/23/MP</td><td>JK Civil Works</td><td style="font-weight:600">R 3.4M</td><td style="font-size:11.5px">Dec 2024</td><td><div class="pgw" style="width:80px"><div class="pg pgg" style="width:68%"></div></div><div style="font-size:10.5px;color:var(--t4);margin-top:2px">68%</div></td><td><span class="pill pa">Active</span></td></tr>
-          <tr onclick="showDetail()"><td><div style="font-weight:600;font-size:12px">Solar PV Installation &mdash; Bushbuckridge</div><div style="font-size:11px;color:var(--t4)">DRDAR &middot; Ehlanzeni</div></td><td style="font-size:11.5px;color:var(--t3)">ALA/532/21/MP</td><td>SolarPro (Pty) Ltd</td><td style="font-weight:600">R 8.1M</td><td style="font-size:11.5px;color:var(--rd);font-weight:500">Feb 2025 &#9888;</td><td><div class="pgw" style="width:80px"><div class="pg pgb" style="width:45%"></div></div><div style="font-size:10.5px;color:var(--t4);margin-top:2px">45%</div></td><td><span class="pill pp">Pending</span></td></tr>
-          <tr onclick="showDetail()"><td><div style="font-weight:600;font-size:12px">Perimeter Fencing &mdash; Gert Sibande</div><div style="font-size:11px;color:var(--t4)">CASP &middot; Gert Sibande</div></td><td style="font-size:11.5px;color:var(--t3)">ALA/301/22/MP</td><td>Boundary Fencing CC</td><td style="font-weight:600">R 1.2M</td><td style="font-size:11.5px">May 2024</td><td><div class="pgw" style="width:80px"><div class="pg pgg" style="width:92%"></div></div><div style="font-size:10.5px;color:var(--t4);margin-top:2px">92%</div></td><td><span class="pill pa">Active</span></td></tr>
-          <tr onclick="showDetail()"><td><div style="font-weight:600;font-size:12px">Borehole Drilling &mdash; Ehlanzeni LM</div><div style="font-size:11px;color:var(--t4)">CASP &middot; Ehlanzeni</div></td><td style="font-size:11.5px;color:var(--t3)">ALA/190/24/MP</td><td>WaterDrill SA</td><td style="font-weight:600">R 780K</td><td style="font-size:11.5px">Jul 2024</td><td><div class="pgw" style="width:80px"><div class="pg pgb" style="width:100%"></div></div><div style="font-size:10.5px;color:var(--t4);margin-top:2px">100%</div></td><td><span class="pill pd">Completed</span></td></tr>
-          <tr onclick="showDetail()"><td><div style="font-weight:600;font-size:12px">Farm Access Roads &mdash; Nkangala</div><div style="font-size:11px;color:var(--t4)">DRDAR &middot; Nkangala</div></td><td style="font-size:11.5px;color:var(--t3)">ALA/077/24/MP</td><td>Mpumalanga Road Works</td><td style="font-weight:600">R 5.6M</td><td style="font-size:11.5px">Aug 2025</td><td><div class="pgw" style="width:80px"><div class="pg pga" style="width:22%"></div></div><div style="font-size:10.5px;color:var(--t4);margin-top:2px">22%</div></td><td><span class="pill pa">Active</span></td></tr>
-        </tbody>
-      </table></div>
+      <div class="card">
+        <div class="tbl-wrap"><table>
+          <thead><tr><th>Contract Name</th><th>No.</th><th>Value</th><th>End Date</th><th>Progress</th><th>Status</th></tr></thead>
+          <tbody id="ctTable">
+            <tr onclick="showDetail()"><td><div style="font-weight:600;font-size:12px">Irrigation System &mdash; Nkomazi LM</div><div style="font-size:11px;color:var(--t4)">CASP &middot; Ehlanzeni</div></td><td style="font-size:11px;color:var(--t3)">ALA/488/23</td><td style="font-weight:600">R 3.4M</td><td style="font-size:11px">Dec 2024</td><td><div class="pgw" style="width:70px"><div class="pg pgg" style="width:68%"></div></div><div style="font-size:10px;color:var(--t4);margin-top:2px">68%</div></td><td><span class="pill pa">Active</span></td></tr>
+            <tr onclick="showDetail()"><td><div style="font-weight:600;font-size:12px">Solar PV &mdash; Bushbuckridge</div><div style="font-size:11px;color:var(--t4)">DRDAR &middot; Ehlanzeni</div></td><td style="font-size:11px;color:var(--t3)">ALA/532/21</td><td style="font-weight:600">R 8.1M</td><td style="font-size:11px;color:var(--rd);font-weight:500">Feb 2025 &#9888;</td><td><div class="pgw" style="width:70px"><div class="pg pgb" style="width:45%"></div></div><div style="font-size:10px;color:var(--t4);margin-top:2px">45%</div></td><td><span class="pill pp">Pending</span></td></tr>
+            <tr onclick="showDetail()"><td><div style="font-weight:600;font-size:12px">Perimeter Fencing &mdash; Gert Sibande</div><div style="font-size:11px;color:var(--t4)">CASP &middot; Gert Sibande</div></td><td style="font-size:11px;color:var(--t3)">ALA/301/22</td><td style="font-weight:600">R 1.2M</td><td style="font-size:11px">May 2024</td><td><div class="pgw" style="width:70px"><div class="pg pgg" style="width:92%"></div></div><div style="font-size:10px;color:var(--t4);margin-top:2px">92%</div></td><td><span class="pill pa">Active</span></td></tr>
+            <tr onclick="showDetail()"><td><div style="font-weight:600;font-size:12px">Borehole Drilling &mdash; Ehlanzeni LM</div><div style="font-size:11px;color:var(--t4)">CASP &middot; Ehlanzeni</div></td><td style="font-size:11px;color:var(--t3)">ALA/190/24</td><td style="font-weight:600">R 780K</td><td style="font-size:11px">Jul 2024</td><td><div class="pgw" style="width:70px"><div class="pg pgb" style="width:100%"></div></div><div style="font-size:10px;color:var(--t4);margin-top:2px">100%</div></td><td><span class="pill pd">Completed</span></td></tr>
+            <tr onclick="showDetail()"><td><div style="font-weight:600;font-size:12px">Farm Access Roads &mdash; Nkangala</div><div style="font-size:11px;color:var(--t4)">DRDAR &middot; Nkangala</div></td><td style="font-size:11px;color:var(--t3)">ALA/077/24</td><td style="font-weight:600">R 5.6M</td><td style="font-size:11px">Aug 2025</td><td><div class="pgw" style="width:70px"><div class="pg pga" style="width:22%"></div></div><div style="font-size:10px;color:var(--t4);margin-top:2px">22%</div></td><td><span class="pill pa">Active</span></td></tr>
+          </tbody>
+        </table></div>
+        <!-- mobile cards -->
+        <div class="mcard" id="ctMcard">
+          <div class="mc-row" onclick="showDetail()"><div class="mc-top"><div><div class="mc-title">Irrigation System &mdash; Nkomazi LM</div><div class="mc-sub">ALA/488/23/MP &middot; CASP &middot; JK Civil Works</div></div><span class="pill pa">Active</span></div><div class="mc-meta"><span class="mc-val">R 3.4M</span><div class="pgw" style="width:80px;margin-left:4px"><div class="pg pgg" style="width:68%"></div></div><span class="mc-info">68%</span></div></div>
+          <div class="mc-row" onclick="showDetail()"><div class="mc-top"><div><div class="mc-title">Solar PV &mdash; Bushbuckridge</div><div class="mc-sub">ALA/532/21/MP &middot; DRDAR &middot; SolarPro</div></div><span class="pill pp">Pending</span></div><div class="mc-meta"><span class="mc-val">R 8.1M</span><span class="mc-info" style="color:var(--rd)">Exp Feb 2025 &#9888;</span></div></div>
+          <div class="mc-row" onclick="showDetail()"><div class="mc-top"><div><div class="mc-title">Perimeter Fencing &mdash; Gert Sibande</div><div class="mc-sub">ALA/301/22/MP &middot; CASP &middot; Boundary Fencing</div></div><span class="pill pa">Active</span></div><div class="mc-meta"><span class="mc-val">R 1.2M</span><div class="pgw" style="width:80px;margin-left:4px"><div class="pg pgg" style="width:92%"></div></div><span class="mc-info">92%</span></div></div>
+          <div class="mc-row" onclick="showDetail()"><div class="mc-top"><div><div class="mc-title">Borehole Drilling &mdash; Ehlanzeni LM</div><div class="mc-sub">ALA/190/24/MP &middot; CASP &middot; WaterDrill SA</div></div><span class="pill pd">Completed</span></div><div class="mc-meta"><span class="mc-val">R 780K</span><span class="mc-info">Jul 2024</span></div></div>
+          <div class="mc-row" onclick="showDetail()"><div class="mc-top"><div><div class="mc-title">Farm Access Roads &mdash; Nkangala</div><div class="mc-sub">ALA/077/24/MP &middot; DRDAR &middot; Mpumalanga Road Works</div></div><span class="pill pa">Active</span></div><div class="mc-meta"><span class="mc-val">R 5.6M</span><div class="pgw" style="width:80px;margin-left:4px"><div class="pg pga" style="width:22%"></div></div><span class="mc-info">22%</span></div></div>
+        </div>
+      </div>
     </div>
 
-    <!-- DETAIL -->
+    <!-- CONTRACT DETAIL -->
     <div class="sec" id="s-detail">
       <div class="back" onclick="go('contracts',document.querySelectorAll('.ni')[1])">&#8592; Back to contracts</div>
-      <div class="notice nw">&#9888; This contract expires in 14 days. An extension must be submitted and approved before expiry to avoid lapsing.</div>
-      <div class="card" style="margin-bottom:16px">
+      <div class="notice nw">&#9888; This contract expires in 14 days. Submit an extension before expiry.</div>
+      <div class="card" style="margin-bottom:14px">
         <div class="dlhd">
-          <div><div class="dltt">Solar PV Installation &mdash; Bushbuckridge Agricultural Hub</div><div class="dlsb">ALA/532/21/MP &middot; DRDAR Funding &middot; Ehlanzeni District</div></div>
-          <div style="display:flex;gap:8px;flex-shrink:0"><button class="btn btnx" onclick="openApproval()">Send for Approval</button><button class="btn btnp btnx">Edit Contract</button></div>
+          <div><div class="dltt">Solar PV Installation &mdash; Bushbuckridge Agricultural Hub</div><div class="dlsb">ALA/532/21/MP &middot; DRDAR &middot; Ehlanzeni District</div></div>
+          <div style="display:flex;gap:8px"><button class="btn btnx" onclick="openApproval()">Send for Approval</button><button class="btn btnp btnx">Edit</button></div>
         </div>
-        <div style="padding:16px 18px 4px">
+        <div style="padding:14px 14px 4px">
           <div class="dlg">
             <div class="df"><label>Contract No.</label><span>ALA/532/21/MP</span></div>
-            <div class="df"><label>Project No.</label><span>PROJ/532/21/MP</span></div>
-            <div class="df"><label>Status</label><span><span class="pill pp">Pending Approval</span></span></div>
-            <div class="df"><label>Start Date</label><span>01 March 2024</span></div>
+            <div class="df"><label>Status</label><span><span class="pill pp">Pending</span></span></div>
+            <div class="df"><label>Start Date</label><span>01 Mar 2024</span></div>
             <div class="df"><label>End Date</label><span style="color:var(--rd);font-weight:600">28 Feb 2025 &#9888;</span></div>
-            <div class="df"><label>Contract Value</label><span style="font-weight:600">R 8,100,000.00</span></div>
-            <div class="df"><label>Contract Type</label><span>Infrastructure &middot; Energy</span></div>
+            <div class="df"><label>Contract Value</label><span style="font-weight:600">R 8,100,000</span></div>
             <div class="df"><label>Service Provider</label><span>SolarPro (Pty) Ltd</span></div>
-            <div class="df"><label>Approved Variations</label><span>R 420,000 (5.18%)</span></div>
+            <div class="df"><label>Contract Type</label><span>Infrastructure</span></div>
+            <div class="df"><label>Variations</label><span>R 420,000 (5.18%)</span></div>
           </div>
         </div>
         <div class="tabs">
@@ -391,24 +522,24 @@ tbody tr:hover td{background:var(--b3);cursor:pointer}
           <div class="tab" onclick="st(this,'td')">Documents</div>
         </div>
         <div id="tm" class="tbc2">
-          <div class="mlr"><div class="mln mnd">&#10003;</div><div style="flex:1"><div style="font-weight:600">Site Preparation &amp; Survey</div><div style="font-size:11px;color:var(--t4)">Target: 30 Apr 2024 &middot; Completed: 28 Apr 2024</div></div><div style="text-align:right"><div style="font-weight:600">R 810,000</div><span class="pill pd" style="font-size:10.5px">Paid</span></div></div>
-          <div class="mlr"><div class="mln mnd">&#10003;</div><div style="flex:1"><div style="font-weight:600">Mounting Structure Installation</div><div style="font-size:11px;color:var(--t4)">Target: 30 Jun 2024 &middot; Completed: 05 Jul 2024</div></div><div style="text-align:right"><div style="font-weight:600">R 2,100,000</div><span class="pill pd" style="font-size:10.5px">Paid</span></div></div>
-          <div class="mlr"><div class="mln mna">3</div><div style="flex:1"><div style="font-weight:600">Panel &amp; Inverter Installation</div><div style="font-size:11px;color:var(--t4)">Target: 31 Oct 2024 &middot; In progress</div></div><div style="text-align:right"><div style="font-weight:600">R 3,200,000</div><span class="pill pp" style="font-size:10.5px">Pending</span></div></div>
-          <div class="mlr"><div class="mln mnw">4</div><div style="flex:1"><div style="font-weight:600">Grid Integration &amp; Testing</div><div style="font-size:11px;color:var(--t4)">Target: 31 Jan 2025</div></div><div style="text-align:right"><div style="font-weight:600">R 1,500,000</div><span class="pill pf" style="font-size:10.5px">Not started</span></div></div>
-          <div class="mlr"><div class="mln mnw">5</div><div style="flex:1"><div style="font-weight:600">Handover &amp; Commissioning</div><div style="font-size:11px;color:var(--t4)">Target: 28 Feb 2025</div></div><div style="text-align:right"><div style="font-weight:600">R 490,000</div><span class="pill pf" style="font-size:10.5px">Not started</span></div></div>
+          <div class="mlr"><div class="mln mnd">&#10003;</div><div style="flex:1"><div style="font-weight:600">Site Preparation &amp; Survey</div><div style="font-size:11px;color:var(--t4)">Target: 30 Apr 2024 &middot; Completed 28 Apr 2024</div></div><div style="text-align:right;flex-shrink:0"><div style="font-weight:600">R 810K</div><span class="pill pd" style="font-size:10.5px">Paid</span></div></div>
+          <div class="mlr"><div class="mln mnd">&#10003;</div><div style="flex:1"><div style="font-weight:600">Mounting Structure Installation</div><div style="font-size:11px;color:var(--t4)">Target: 30 Jun 2024 &middot; Completed 05 Jul 2024</div></div><div style="text-align:right;flex-shrink:0"><div style="font-weight:600">R 2.1M</div><span class="pill pd" style="font-size:10.5px">Paid</span></div></div>
+          <div class="mlr"><div class="mln mna">3</div><div style="flex:1"><div style="font-weight:600">Panel &amp; Inverter Installation</div><div style="font-size:11px;color:var(--t4)">Target: 31 Oct 2024 &middot; In progress</div></div><div style="text-align:right;flex-shrink:0"><div style="font-weight:600">R 3.2M</div><span class="pill pp" style="font-size:10.5px">Pending</span></div></div>
+          <div class="mlr"><div class="mln mnw">4</div><div style="flex:1"><div style="font-weight:600">Grid Integration &amp; Testing</div><div style="font-size:11px;color:var(--t4)">Target: 31 Jan 2025</div></div><div style="text-align:right;flex-shrink:0"><div style="font-weight:600">R 1.5M</div><span class="pill pf" style="font-size:10.5px">Not started</span></div></div>
+          <div class="mlr"><div class="mln mnw">5</div><div style="flex:1"><div style="font-weight:600">Handover &amp; Commissioning</div><div style="font-size:11px;color:var(--t4)">Target: 28 Feb 2025</div></div><div style="text-align:right;flex-shrink:0"><div style="font-weight:600">R 490K</div><span class="pill pf" style="font-size:10.5px">Not started</span></div></div>
         </div>
         <div id="tp" class="tbc2" style="display:none">
-          <div class="pr"><div style="flex:1"><div class="prt">Payment Certificate #1</div><div class="prs">Site Preparation &middot; Submitted 05 May 2024</div></div><div style="text-align:right"><div style="font-weight:600">R 810,000</div><span class="pill pd" style="font-size:10.5px">Paid</span></div></div>
-          <div class="pr"><div style="flex:1"><div class="prt">Payment Certificate #2</div><div class="prs">Mounting Structures &middot; Submitted 12 Jul 2024</div></div><div style="text-align:right"><div style="font-weight:600">R 2,100,000</div><span class="pill pd" style="font-size:10.5px">Paid</span></div></div>
-          <div class="pr"><div style="flex:1"><div class="prt">Payment Certificate #3</div><div class="prs">Panel Installation &middot; Awaiting submission</div></div><div style="text-align:right"><div style="font-weight:600">R 3,200,000</div><span class="pill pp" style="font-size:10.5px">Pending</span></div></div>
+          <div class="pr"><div style="flex:1"><div class="prt">Payment Certificate #1 &mdash; Site Preparation</div><div class="prs">Submitted 05 May 2024</div></div><div style="text-align:right;flex-shrink:0"><div style="font-weight:600">R 810,000</div><span class="pill pd" style="font-size:10.5px">Paid</span></div></div>
+          <div class="pr"><div style="flex:1"><div class="prt">Payment Certificate #2 &mdash; Mounting Structures</div><div class="prs">Submitted 12 Jul 2024</div></div><div style="text-align:right;flex-shrink:0"><div style="font-weight:600">R 2,100,000</div><span class="pill pd" style="font-size:10.5px">Paid</span></div></div>
+          <div class="pr"><div style="flex:1"><div class="prt">Payment Certificate #3 &mdash; Panel Installation</div><div class="prs">Awaiting submission</div></div><div style="text-align:right;flex-shrink:0"><div style="font-weight:600">R 3,200,000</div><span class="pill pp" style="font-size:10.5px">Pending</span></div></div>
         </div>
         <div id="tv" class="tbc2" style="display:none">
-          <div class="notice ni2">All variations require written justification and Level 2 authorization before payment processing.</div>
-          <div class="pr"><div style="flex:1"><div class="prt">VAR-001 &middot; Additional panel mounting hardware</div><div class="prs">Reason: Unforeseen site conditions &middot; Requested by SolarPro</div></div><div style="text-align:right"><div style="font-weight:600;color:var(--g)">+ R 420,000</div><span class="pill pa" style="font-size:10.5px">Approved</span></div></div>
+          <div class="notice ni2">All variations require Level 2 authorization before payment processing.</div>
+          <div class="pr"><div style="flex:1"><div class="prt">VAR-001 &middot; Additional panel mounting hardware</div><div class="prs">Reason: Unforeseen site conditions</div></div><div style="text-align:right;flex-shrink:0"><div style="font-weight:600;color:var(--g)">+ R 420,000</div><span class="pill pa" style="font-size:10.5px">Approved</span></div></div>
         </div>
         <div id="tt" class="tbc2" style="display:none">
-          <div class="pr"><div style="flex:1"><div class="prt">Site inspection &mdash; Milestone 3 verification</div><div class="prs">Assigned to: T. Nkosi &middot; Due: 25 Oct 2024</div></div><span class="pill pp" style="font-size:10.5px">Due soon</span></div>
-          <div class="pr"><div style="flex:1"><div class="prt">Submit Payment Certificate #3 to Finance</div><div class="prs">Assigned to: C. Shabangu &middot; Due: 30 Oct 2024</div></div><span class="pill pa" style="font-size:10.5px">In progress</span></div>
+          <div class="pr"><div style="flex:1"><div class="prt">Site inspection &mdash; Milestone 3 verification</div><div class="prs">T. Nkosi &middot; Due 25 Oct 2024</div></div><span class="pill pp" style="font-size:10.5px">Due soon</span></div>
+          <div class="pr"><div style="flex:1"><div class="prt">Submit Payment Certificate #3 to Finance</div><div class="prs">C. Shabangu &middot; Due 30 Oct 2024</div></div><span class="pill pa" style="font-size:10.5px">In progress</span></div>
         </div>
         <div id="td" class="tbc2" style="display:none">
           <div class="pr"><div style="font-size:18px;margin-right:6px">&#128206;</div><div style="flex:1"><div class="prt">Signed Contract &mdash; ALA532_21_Signed.pdf</div><div class="prs">Uploaded 01 Mar 2024 &middot; 2.4 MB</div></div><button class="btn btnx">View</button></div>
@@ -420,57 +551,74 @@ tbody tr:hover td{background:var(--b3);cursor:pointer}
     <!-- REPORTS -->
     <div class="sec" id="s-reports">
       <div class="rkpi">
-        <div class="mc mcb"><div class="ml">Total Expenditure YTD</div><div class="mv vb">R 29.4M</div><div class="ms">62.3% of FY budget</div></div>
-        <div class="mc mcg"><div class="ml">Contracts Completed</div><div class="mv vg">4</div><div class="ms">On time &amp; within budget</div></div>
-        <div class="mc mcg"><div class="ml">AG Compliance Score</div><div class="mv vg">94%</div><div class="ms">Auditor-General ready</div></div>
+        <div class="mc mcb"><div class="ml">Expenditure YTD</div><div class="mv vb">R 29.4M</div><div class="ms">62.3% of budget</div></div>
+        <div class="mc mcg"><div class="ml">Completed</div><div class="mv vg">4</div><div class="ms">On time &amp; budget</div></div>
+        <div class="mc mcg"><div class="ml">AG Score</div><div class="mv vg">94%</div><div class="ms">Audit ready</div></div>
       </div>
       <div class="g2" style="margin-bottom:14px">
         <div class="card"><div class="chd"><span class="cht">Monthly Disbursements</span><span class="chs">R thousands</span></div><div class="cb"><div class="chw"><canvas id="c2"></canvas></div></div></div>
         <div class="card"><div class="chd"><span class="cht">Contracts by Status</span></div><div class="cb"><div class="chw"><canvas id="c3"></canvas></div><div class="leg" style="margin-top:8px"><div class="li"><div class="ls" style="background:#1B5E42"></div>Active 12</div><div class="li"><div class="ls" style="background:#F59E0B"></div>Pending 3</div><div class="li"><div class="ls" style="background:#EF4444"></div>Expired 2</div><div class="li"><div class="ls" style="background:#3B82F6"></div>Completed 4</div></div></div></div>
       </div>
       <div class="card"><div class="chd"><span class="cht">Legislative Compliance &mdash; FY 2024/25</span><button class="btn btnp btnx">Export PDF</button></div>
-        <table><thead><tr><th>Report Type</th><th>Period</th><th>Contracts</th><th>Submitted To</th><th>Status</th></tr></thead><tbody>
-          <tr><td>CASP Quarterly Report</td><td>Q2 FY2024</td><td>7</td><td>National Treasury</td><td><span class="pill pd">Submitted</span></td></tr>
-          <tr><td>DRDAR Annual Performance Plan</td><td>FY2023/24</td><td>12</td><td>DPME</td><td><span class="pill pd">Submitted</span></td></tr>
-          <tr><td>Auditor-General Evidence Pack</td><td>FY2023/24</td><td>18</td><td>Auditor-General SA</td><td><span class="pill pa">In Preparation</span></td></tr>
-          <tr><td>CASP Q3 Report</td><td>Q3 FY2024</td><td>9</td><td>National Treasury</td><td><span class="pill pp">Due 30 Nov</span></td></tr>
-        </tbody></table>
+        <div class="tbl-wrap"><table><thead><tr><th>Report Type</th><th>Period</th><th>Submitted To</th><th>Status</th></tr></thead><tbody>
+          <tr><td>CASP Quarterly Report</td><td>Q2 FY2024</td><td>National Treasury</td><td><span class="pill pd">Submitted</span></td></tr>
+          <tr><td>DRDAR Annual Performance</td><td>FY2023/24</td><td>DPME</td><td><span class="pill pd">Submitted</span></td></tr>
+          <tr><td>Auditor-General Evidence Pack</td><td>FY2023/24</td><td>AG South Africa</td><td><span class="pill pa">In Preparation</span></td></tr>
+          <tr><td>CASP Q3 Report</td><td>Q3 FY2024</td><td>National Treasury</td><td><span class="pill pp">Due 30 Nov</span></td></tr>
+        </tbody></table></div>
       </div>
     </div>
 
     <!-- APPROVALS -->
     <div class="sec" id="s-approvals">
-      <div class="notice ni2">Approval workflows are configured under Settings. Status changes, extensions, variations and milestone payments all route through this multi-level chain.</div>
-      <div class="card"><div class="chd"><span class="cht">Pending Approvals</span><span class="chs">5 items requiring action</span></div>
-        <table><thead><tr><th>Contract</th><th>Action</th><th>Requested By</th><th>Date</th><th>Level</th><th>Actions</th></tr></thead><tbody>
-          <tr><td><div style="font-weight:600;font-size:12px">ALA/488/23/MP</div><div style="font-size:11px;color:var(--t4)">Irrigation</div></td><td><span class="pill" style="background:#F3E8FF;color:#5B21B6;font-size:10.5px">Variation</span></td><td>C. Shabangu</td><td style="font-size:11.5px">15 Oct 2024</td><td style="font-size:11.5px">Level 2</td><td style="display:flex;gap:6px"><button class="btn btnx" style="color:var(--g);border-color:var(--g)">Approve</button><button class="btn btnx" style="color:var(--rd);border-color:var(--rd)">Reject</button></td></tr>
-          <tr><td><div style="font-weight:600;font-size:12px">ALA/532/21/MP</div><div style="font-size:11px;color:var(--t4)">Solar</div></td><td><span class="pill pp" style="font-size:10.5px">Extension</span></td><td>C. Shabangu</td><td style="font-size:11.5px">16 Oct 2024</td><td style="font-size:11.5px">Level 1</td><td style="display:flex;gap:6px"><button class="btn btnx" style="color:var(--g);border-color:var(--g)">Approve</button><button class="btn btnx" style="color:var(--rd);border-color:var(--rd)">Reject</button></td></tr>
-          <tr><td><div style="font-weight:600;font-size:12px">ALA/301/22/MP</div><div style="font-size:11px;color:var(--t4)">Fencing</div></td><td><span class="pill" style="background:#DCFCE7;color:#166534;font-size:10.5px">Milestone Payment</span></td><td>T. Nkosi</td><td style="font-size:11.5px">17 Oct 2024</td><td style="font-size:11.5px">Level 2</td><td style="display:flex;gap:6px"><button class="btn btnx" style="color:var(--g);border-color:var(--g)">Approve</button><button class="btn btnx" style="color:var(--rd);border-color:var(--rd)">Reject</button></td></tr>
-        </tbody></table>
+      <div class="notice ni2">All status changes, extensions, variations and milestone payments route through the configured multi-level approval chain.</div>
+      <div class="card">
+        <div class="chd"><span class="cht">Pending Approvals</span><span class="chs">5 items</span></div>
+        <div class="tbl-wrap"><table><thead><tr><th>Contract</th><th>Action</th><th>Requested By</th><th>Level</th><th>Actions</th></tr></thead><tbody>
+          <tr><td><div style="font-weight:600;font-size:12px">ALA/488/23/MP</div><div style="font-size:11px;color:var(--t4)">Irrigation</div></td><td><span class="pill" style="background:#F3E8FF;color:#5B21B6;font-size:10.5px">Variation</span></td><td>C. Shabangu</td><td style="font-size:11.5px">Level 2</td><td style="display:flex;gap:5px"><button class="btn btnx" style="color:var(--g);border-color:var(--g)">Approve</button><button class="btn btnx" style="color:var(--rd);border-color:var(--rd)">Reject</button></td></tr>
+          <tr><td><div style="font-weight:600;font-size:12px">ALA/532/21/MP</div><div style="font-size:11px;color:var(--t4)">Solar</div></td><td><span class="pill pp" style="font-size:10.5px">Extension</span></td><td>C. Shabangu</td><td style="font-size:11.5px">Level 1</td><td style="display:flex;gap:5px"><button class="btn btnx" style="color:var(--g);border-color:var(--g)">Approve</button><button class="btn btnx" style="color:var(--rd);border-color:var(--rd)">Reject</button></td></tr>
+          <tr><td><div style="font-weight:600;font-size:12px">ALA/301/22/MP</div><div style="font-size:11px;color:var(--t4)">Fencing</div></td><td><span class="pill" style="background:#DCFCE7;color:#166534;font-size:10.5px">Milestone Pmt</span></td><td>T. Nkosi</td><td style="font-size:11.5px">Level 2</td><td style="display:flex;gap:5px"><button class="btn btnx" style="color:var(--g);border-color:var(--g)">Approve</button><button class="btn btnx" style="color:var(--rd);border-color:var(--rd)">Reject</button></td></tr>
+        </tbody></table></div>
+        <!-- mobile cards -->
+        <div class="mcard">
+          <div class="mc-row"><div class="mc-top"><div><div class="mc-title">ALA/488/23/MP &mdash; Variation</div><div class="mc-sub">C. Shabangu &middot; Level 2 &middot; 15 Oct 2024</div></div><span class="pill" style="background:#F3E8FF;color:#5B21B6;font-size:10.5px">Variation</span></div><div class="mc-meta" style="margin-top:8px;gap:6px"><button class="btn btnx" style="color:var(--g);border-color:var(--g)">Approve</button><button class="btn btnx" style="color:var(--rd);border-color:var(--rd)">Reject</button></div></div>
+          <div class="mc-row"><div class="mc-top"><div><div class="mc-title">ALA/532/21/MP &mdash; Extension</div><div class="mc-sub">C. Shabangu &middot; Level 1 &middot; 16 Oct 2024</div></div><span class="pill pp" style="font-size:10.5px">Extension</span></div><div class="mc-meta" style="margin-top:8px;gap:6px"><button class="btn btnx" style="color:var(--g);border-color:var(--g)">Approve</button><button class="btn btnx" style="color:var(--rd);border-color:var(--rd)">Reject</button></div></div>
+          <div class="mc-row"><div class="mc-top"><div><div class="mc-title">ALA/301/22/MP &mdash; Milestone Payment</div><div class="mc-sub">T. Nkosi &middot; Level 2 &middot; 17 Oct 2024</div></div><span class="pill" style="background:#DCFCE7;color:#166534;font-size:10.5px">Milestone Pmt</span></div><div class="mc-meta" style="margin-top:8px;gap:6px"><button class="btn btnx" style="color:var(--g);border-color:var(--g)">Approve</button><button class="btn btnx" style="color:var(--rd);border-color:var(--rd)">Reject</button></div></div>
+        </div>
       </div>
     </div>
 
     <!-- PROVIDERS -->
     <div class="sec" id="s-providers">
-      <div class="card"><div class="chd"><span class="cht">Registered Service Providers</span><button class="btn btnp btnx">+ Add Provider</button></div>
-        <table><thead><tr><th>Provider Name</th><th>Registration No.</th><th>Category</th><th>Active Contracts</th><th>Total Value</th><th>B-BBEE</th></tr></thead><tbody>
-          <tr><td><div style="font-weight:600">JK Civil Works</div><div style="font-size:11px;color:var(--t4)">jkcivil@example.co.za</div></td><td style="font-size:11.5px">2018/234567/07</td><td>Infrastructure</td><td style="text-align:center;font-weight:600">3</td><td style="font-weight:600">R 7.2M</td><td><span class="pill pa" style="font-size:10.5px">Level 1</span></td></tr>
-          <tr><td><div style="font-weight:600">SolarPro (Pty) Ltd</div><div style="font-size:11px;color:var(--t4)">info@solarpro.co.za</div></td><td style="font-size:11.5px">2015/098765/07</td><td>Energy</td><td style="text-align:center;font-weight:600">1</td><td style="font-weight:600">R 8.1M</td><td><span class="pill pa" style="font-size:10.5px">Level 2</span></td></tr>
-          <tr><td><div style="font-weight:600">WaterDrill SA</div><div style="font-size:11px;color:var(--t4)">drill@waterdrill.co.za</div></td><td style="font-size:11.5px">2020/112233/07</td><td>Water &amp; Boreholes</td><td style="text-align:center;font-weight:600">2</td><td style="font-weight:600">R 1.9M</td><td><span class="pill pa" style="font-size:10.5px">Level 1</span></td></tr>
-          <tr><td><div style="font-weight:600">Boundary Fencing CC</div><div style="font-size:11px;color:var(--t4)">ops@bfencing.co.za</div></td><td style="font-size:11.5px">2010/567890/23</td><td>Fencing</td><td style="text-align:center;font-weight:600">1</td><td style="font-weight:600">R 1.2M</td><td><span class="pill pp" style="font-size:10.5px">Level 3</span></td></tr>
-        </tbody></table>
+      <div class="card"><div class="chd"><span class="cht">Service Providers</span><button class="btn btnp btnx">+ Add</button></div>
+        <div class="tbl-wrap"><table><thead><tr><th>Provider</th><th>Registration</th><th>Category</th><th>Contracts</th><th>Value</th><th>B-BBEE</th></tr></thead><tbody>
+          <tr><td><div style="font-weight:600">JK Civil Works</div></td><td style="font-size:11px">2018/234567/07</td><td>Infrastructure</td><td style="text-align:center;font-weight:600">3</td><td style="font-weight:600">R 7.2M</td><td><span class="pill pa" style="font-size:10.5px">Lvl 1</span></td></tr>
+          <tr><td><div style="font-weight:600">SolarPro (Pty) Ltd</div></td><td style="font-size:11px">2015/098765/07</td><td>Energy</td><td style="text-align:center;font-weight:600">1</td><td style="font-weight:600">R 8.1M</td><td><span class="pill pa" style="font-size:10.5px">Lvl 2</span></td></tr>
+          <tr><td><div style="font-weight:600">WaterDrill SA</div></td><td style="font-size:11px">2020/112233/07</td><td>Boreholes</td><td style="text-align:center;font-weight:600">2</td><td style="font-weight:600">R 1.9M</td><td><span class="pill pa" style="font-size:10.5px">Lvl 1</span></td></tr>
+          <tr><td><div style="font-weight:600">Boundary Fencing CC</div></td><td style="font-size:11px">2010/567890/23</td><td>Fencing</td><td style="text-align:center;font-weight:600">1</td><td style="font-weight:600">R 1.2M</td><td><span class="pill pp" style="font-size:10.5px">Lvl 3</span></td></tr>
+        </tbody></table></div>
+        <div class="mcard">
+          <div class="mc-row"><div class="mc-top"><div><div class="mc-title">JK Civil Works</div><div class="mc-sub">Infrastructure &middot; 2018/234567/07</div></div><span class="pill pa" style="font-size:10.5px">B-BBEE Lvl 1</span></div><div class="mc-meta"><span class="mc-val">R 7.2M</span><span class="mc-info">3 active contracts</span></div></div>
+          <div class="mc-row"><div class="mc-top"><div><div class="mc-title">SolarPro (Pty) Ltd</div><div class="mc-sub">Energy &middot; 2015/098765/07</div></div><span class="pill pa" style="font-size:10.5px">B-BBEE Lvl 2</span></div><div class="mc-meta"><span class="mc-val">R 8.1M</span><span class="mc-info">1 active contract</span></div></div>
+          <div class="mc-row"><div class="mc-top"><div><div class="mc-title">WaterDrill SA</div><div class="mc-sub">Boreholes &middot; 2020/112233/07</div></div><span class="pill pa" style="font-size:10.5px">B-BBEE Lvl 1</span></div><div class="mc-meta"><span class="mc-val">R 1.9M</span><span class="mc-info">2 active contracts</span></div></div>
+          <div class="mc-row"><div class="mc-top"><div><div class="mc-title">Boundary Fencing CC</div><div class="mc-sub">Fencing &middot; 2010/567890/23</div></div><span class="pill pp" style="font-size:10.5px">B-BBEE Lvl 3</span></div><div class="mc-meta"><span class="mc-val">R 1.2M</span><span class="mc-info">1 active contract</span></div></div>
+        </div>
       </div>
     </div>
 
     <!-- MILESTONES -->
     <div class="sec" id="s-milestones">
-      <div class="card"><div class="chd"><span class="cht">Milestone Register &mdash; All Contracts</span><button class="btn btnx">Export to Excel</button></div>
-        <table><thead><tr><th>Contract No.</th><th>Milestone</th><th>Target Date</th><th>Value</th><th>Status</th><th>Payment</th></tr></thead><tbody>
-          <tr><td style="font-size:11.5px;color:var(--t3)">ALA/488/23/MP</td><td>Site Preparation</td><td>30 Apr 2024</td><td style="font-weight:600">R 340,000</td><td><span class="pill pd">Completed</span></td><td><span class="pill pd">Paid</span></td></tr>
-          <tr><td style="font-size:11.5px;color:var(--t3)">ALA/532/21/MP</td><td>Mounting Structures</td><td>30 Jun 2024</td><td style="font-weight:600">R 2,100,000</td><td><span class="pill pd">Completed</span></td><td><span class="pill pd">Paid</span></td></tr>
-          <tr><td style="font-size:11.5px;color:var(--t3)">ALA/532/21/MP</td><td>Panel &amp; Inverter Install</td><td>31 Oct 2024</td><td style="font-weight:600">R 3,200,000</td><td><span class="pill pa">In Progress</span></td><td><span class="pill pp">Pending</span></td></tr>
-          <tr><td style="font-size:11.5px;color:var(--t3)">ALA/301/22/MP</td><td>Final Stretch (km 8&ndash;10)</td><td>15 Nov 2024</td><td style="font-weight:600">R 120,000</td><td><span class="pill pa">In Progress</span></td><td><span class="pill pf">Not Submitted</span></td></tr>
-        </tbody></table>
+      <div class="card"><div class="chd"><span class="cht">Milestone Register</span><button class="btn btnx">Export</button></div>
+        <div class="tbl-wrap"><table><thead><tr><th>Contract</th><th>Milestone</th><th>Target Date</th><th>Value</th><th>Status</th><th>Payment</th></tr></thead><tbody>
+          <tr><td style="font-size:11px;color:var(--t3)">ALA/488/23/MP</td><td>Site Preparation</td><td>30 Apr 2024</td><td style="font-weight:600">R 340K</td><td><span class="pill pd">Done</span></td><td><span class="pill pd">Paid</span></td></tr>
+          <tr><td style="font-size:11px;color:var(--t3)">ALA/532/21/MP</td><td>Mounting Structures</td><td>30 Jun 2024</td><td style="font-weight:600">R 2.1M</td><td><span class="pill pd">Done</span></td><td><span class="pill pd">Paid</span></td></tr>
+          <tr><td style="font-size:11px;color:var(--t3)">ALA/532/21/MP</td><td>Panel &amp; Inverter Install</td><td>31 Oct 2024</td><td style="font-weight:600">R 3.2M</td><td><span class="pill pa">In Progress</span></td><td><span class="pill pp">Pending</span></td></tr>
+          <tr><td style="font-size:11px;color:var(--t3)">ALA/301/22/MP</td><td>Final Stretch km 8-10</td><td>15 Nov 2024</td><td style="font-weight:600">R 120K</td><td><span class="pill pa">In Progress</span></td><td><span class="pill pf">Not Submitted</span></td></tr>
+        </tbody></table></div>
+        <div class="mcard">
+          <div class="mc-row"><div class="mc-top"><div><div class="mc-title">Site Preparation</div><div class="mc-sub">ALA/488/23/MP &middot; Due 30 Apr 2024</div></div><span class="pill pd">Paid</span></div><div class="mc-meta"><span class="mc-val">R 340,000</span><span class="pill pd" style="font-size:10.5px">Done</span></div></div>
+          <div class="mc-row"><div class="mc-top"><div><div class="mc-title">Panel &amp; Inverter Installation</div><div class="mc-sub">ALA/532/21/MP &middot; Due 31 Oct 2024</div></div><span class="pill pp">Pending</span></div><div class="mc-meta"><span class="mc-val">R 3,200,000</span><span class="pill pa" style="font-size:10.5px">In Progress</span></div></div>
+        </div>
       </div>
     </div>
 
@@ -478,27 +626,36 @@ tbody tr:hover td{background:var(--b3);cursor:pointer}
     <div class="sec" id="s-payments">
       <div class="mr" style="grid-template-columns:repeat(3,minmax(0,1fr))">
         <div class="mc mcg"><div class="ml">Total Paid YTD</div><div class="mv vg">R 18.6M</div></div>
-        <div class="mc mca"><div class="ml">Awaiting Payment</div><div class="mv va">R 4.3M</div></div>
-        <div class="mc mcb"><div class="ml">Payment Certificates</div><div class="mv vb">42</div></div>
+        <div class="mc mca"><div class="ml">Awaiting</div><div class="mv va">R 4.3M</div></div>
+        <div class="mc mcb"><div class="ml">Certificates</div><div class="mv vb">42</div></div>
       </div>
       <div class="card"><div class="chd"><span class="cht">Payment Certificate Register</span></div>
-        <table><thead><tr><th>Certificate No.</th><th>Contract</th><th>Description</th><th>Amount</th><th>Submitted</th><th>Status</th></tr></thead><tbody>
-          <tr><td style="font-weight:600">PC/2024/042</td><td style="font-size:11.5px;color:var(--t3)">ALA/532/21/MP</td><td>Mounting Structures</td><td style="font-weight:600">R 2,100,000</td><td style="font-size:11.5px">12 Jul 2024</td><td><span class="pill pd">Paid</span></td></tr>
-          <tr><td style="font-weight:600">PC/2024/041</td><td style="font-size:11.5px;color:var(--t3)">ALA/488/23/MP</td><td>Site Preparation</td><td style="font-weight:600">R 340,000</td><td style="font-size:11.5px">05 May 2024</td><td><span class="pill pd">Paid</span></td></tr>
-          <tr><td style="font-weight:600">PC/2024/044</td><td style="font-size:11.5px;color:var(--t3)">ALA/532/21/MP</td><td>Panel Installation (partial)</td><td style="font-weight:600">R 1,600,000</td><td style="font-size:11.5px">10 Oct 2024</td><td><span class="pill pp">In Review</span></td></tr>
-        </tbody></table>
+        <div class="tbl-wrap"><table><thead><tr><th>Certificate</th><th>Contract</th><th>Description</th><th>Amount</th><th>Status</th></tr></thead><tbody>
+          <tr><td style="font-weight:600">PC/2024/042</td><td style="font-size:11px;color:var(--t3)">ALA/532/21/MP</td><td>Mounting Structures</td><td style="font-weight:600">R 2,100,000</td><td><span class="pill pd">Paid</span></td></tr>
+          <tr><td style="font-weight:600">PC/2024/041</td><td style="font-size:11px;color:var(--t3)">ALA/488/23/MP</td><td>Site Preparation</td><td style="font-weight:600">R 340,000</td><td><span class="pill pd">Paid</span></td></tr>
+          <tr><td style="font-weight:600">PC/2024/044</td><td style="font-size:11px;color:var(--t3)">ALA/532/21/MP</td><td>Panel Installation (partial)</td><td style="font-weight:600">R 1,600,000</td><td><span class="pill pp">In Review</span></td></tr>
+        </tbody></table></div>
+        <div class="mcard">
+          <div class="mc-row"><div class="mc-top"><div><div class="mc-title">PC/2024/042 &mdash; Mounting Structures</div><div class="mc-sub">ALA/532/21/MP &middot; 12 Jul 2024</div></div><span class="pill pd">Paid</span></div><div class="mc-meta"><span class="mc-val">R 2,100,000</span></div></div>
+          <div class="mc-row"><div class="mc-top"><div><div class="mc-title">PC/2024/044 &mdash; Panel Installation</div><div class="mc-sub">ALA/532/21/MP &middot; 10 Oct 2024</div></div><span class="pill pp">In Review</span></div><div class="mc-meta"><span class="mc-val">R 1,600,000</span></div></div>
+        </div>
       </div>
     </div>
 
     <!-- VARIATIONS -->
     <div class="sec" id="s-variations">
-      <div class="notice nw">3 variations are pending approval. Payment processing is blocked until related variations are resolved.</div>
+      <div class="notice nw">3 variations pending approval. Payment processing blocked until resolved.</div>
       <div class="card"><div class="chd"><span class="cht">Variation Register</span></div>
-        <table><thead><tr><th>Variation No.</th><th>Contract</th><th>Description</th><th>Amount</th><th>Requested</th><th>Status</th></tr></thead><tbody>
-          <tr><td style="font-weight:600">VAR-001/2024</td><td style="font-size:11.5px;color:var(--t3)">ALA/532/21/MP</td><td>Additional mounting hardware</td><td style="font-weight:600;color:var(--g)">+ R 420,000</td><td style="font-size:11.5px">20 Aug 2024</td><td><span class="pill pd">Approved</span></td></tr>
-          <tr><td style="font-weight:600">VAR-002/2024</td><td style="font-size:11.5px;color:var(--t3)">ALA/488/23/MP</td><td>Scope extension &mdash; 50m additional irrigation pipe</td><td style="font-weight:600;color:var(--g)">+ R 156,000</td><td style="font-size:11.5px">12 Sep 2024</td><td><span class="pill pp">Pending</span></td></tr>
-          <tr><td style="font-weight:600">VAR-003/2024</td><td style="font-size:11.5px;color:var(--t3)">ALA/077/24/MP</td><td>Road realignment &mdash; environmental constraint</td><td style="font-weight:600;color:var(--g)">+ R 280,000</td><td style="font-size:11.5px">01 Oct 2024</td><td><span class="pill pp">Pending</span></td></tr>
-        </tbody></table>
+        <div class="tbl-wrap"><table><thead><tr><th>Variation No.</th><th>Contract</th><th>Description</th><th>Amount</th><th>Status</th></tr></thead><tbody>
+          <tr><td style="font-weight:600">VAR-001/2024</td><td style="font-size:11px;color:var(--t3)">ALA/532/21/MP</td><td>Additional mounting hardware</td><td style="font-weight:600;color:var(--g)">+ R 420,000</td><td><span class="pill pd">Approved</span></td></tr>
+          <tr><td style="font-weight:600">VAR-002/2024</td><td style="font-size:11px;color:var(--t3)">ALA/488/23/MP</td><td>Scope extension &mdash; 50m irrigation pipe</td><td style="font-weight:600;color:var(--g)">+ R 156,000</td><td><span class="pill pp">Pending</span></td></tr>
+          <tr><td style="font-weight:600">VAR-003/2024</td><td style="font-size:11px;color:var(--t3)">ALA/077/24/MP</td><td>Road realignment &mdash; environmental</td><td style="font-weight:600;color:var(--g)">+ R 280,000</td><td><span class="pill pp">Pending</span></td></tr>
+        </tbody></table></div>
+        <div class="mcard">
+          <div class="mc-row"><div class="mc-top"><div><div class="mc-title">VAR-001/2024 &mdash; Mounting hardware</div><div class="mc-sub">ALA/532/21/MP &middot; 20 Aug 2024</div></div><span class="pill pd">Approved</span></div><div class="mc-meta"><span class="mc-val" style="color:var(--g)">+ R 420,000</span></div></div>
+          <div class="mc-row"><div class="mc-top"><div><div class="mc-title">VAR-002/2024 &mdash; Irrigation scope extension</div><div class="mc-sub">ALA/488/23/MP &middot; 12 Sep 2024</div></div><span class="pill pp">Pending</span></div><div class="mc-meta"><span class="mc-val" style="color:var(--g)">+ R 156,000</span></div></div>
+          <div class="mc-row"><div class="mc-top"><div><div class="mc-title">VAR-003/2024 &mdash; Road realignment</div><div class="mc-sub">ALA/077/24/MP &middot; 01 Oct 2024</div></div><span class="pill pp">Pending</span></div><div class="mc-meta"><span class="mc-val" style="color:var(--g)">+ R 280,000</span></div></div>
+        </div>
       </div>
     </div>
 
@@ -506,22 +663,43 @@ tbody tr:hover td{background:var(--b3);cursor:pointer}
     <div class="sec" id="s-settings">
       <div class="g2">
         <div class="card"><div class="chd"><span class="cht">Approval Configuration</span></div>
-          <table><thead><tr><th>Level</th><th>Role</th><th>Assigned To</th><th>Seq.</th></tr></thead><tbody>
+          <div class="tbl-wrap"><table><thead><tr><th>Level</th><th>Role</th><th>Assigned To</th><th>Seq.</th></tr></thead><tbody>
             <tr><td><span class="pill pd" style="font-size:10.5px">Level 1</span></td><td>District Manager</td><td>S. Dlamini</td><td style="text-align:center">1</td></tr>
             <tr><td><span class="pill pa" style="font-size:10.5px">Level 2</span></td><td>Chief Engineer</td><td>T. Nkosi</td><td style="text-align:center">2</td></tr>
             <tr><td><span class="pill pp" style="font-size:10.5px">Level 3</span></td><td>Director</td><td>A.L. Ndlovu</td><td style="text-align:center">3</td></tr>
-          </tbody></table>
-          <div style="padding:12px 16px;border-top:1px solid var(--b1)"><button class="btn btnp btnx">+ Add Approval Level</button></div>
+          </tbody></table></div>
+          <div style="padding:12px 14px;border-top:1px solid var(--b1)"><button class="btn btnp btnx">+ Add Approval Level</button></div>
         </div>
         <div class="card"><div class="chd"><span class="cht">System Preferences</span></div><div class="cb">
-          <div class="pr" style="border-bottom:1px solid var(--b1)"><div style="flex:1"><div class="prt">Contract expiry alert window</div><div class="prs">Notify X days before expiry</div></div><div style="display:flex;align-items:center;gap:6px"><input type="number" value="30" style="width:52px;padding:5px 8px;border:1px solid var(--b1);border-radius:var(--r);font-size:12px;text-align:center"><span style="font-size:12px;color:var(--t3)">days</span></div></div>
-          <div class="pr"><div style="flex:1"><div class="prt">Budget utilisation alert</div><div class="prs">Alert at X% of total contract value</div></div><div style="display:flex;align-items:center;gap:6px"><input type="number" value="80" style="width:52px;padding:5px 8px;border:1px solid var(--b1);border-radius:var(--r);font-size:12px;text-align:center"><span style="font-size:12px;color:var(--t3)">%</span></div></div>
+          <div class="pr" style="border-bottom:1px solid var(--b1)"><div style="flex:1"><div class="prt">Expiry alert window</div><div class="prs">Notify X days before expiry</div></div><div style="display:flex;align-items:center;gap:6px"><input type="number" value="30" style="width:52px;padding:7px 8px;border:1px solid var(--b1);border-radius:var(--r);font-size:13px;text-align:center"><span style="font-size:12px;color:var(--t3)">days</span></div></div>
+          <div class="pr"><div style="flex:1"><div class="prt">Budget utilisation alert</div><div class="prs">Alert at X% of contract value</div></div><div style="display:flex;align-items:center;gap:6px"><input type="number" value="80" style="width:52px;padding:7px 8px;border:1px solid var(--b1);border-radius:var(--r);font-size:13px;text-align:center"><span style="font-size:12px;color:var(--t3)">%</span></div></div>
         </div></div>
       </div>
     </div>
 
   </div>
 </div>
+
+<!-- BOTTOM NAV -->
+<nav class="bnav" id="bnav">
+  <div class="bnav-inner">
+    <button class="bni on" id="bn-dash" onclick="go('dash',document.querySelectorAll('.ni')[0]);setBni('bn-dash')">
+      <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>Dashboard
+    </button>
+    <button class="bni" id="bn-contracts" onclick="go('contracts',document.querySelectorAll('.ni')[1]);setBni('bn-contracts')">
+      <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>Contracts
+    </button>
+    <button class="bni bni-dot" id="bn-approvals" onclick="go('approvals',document.querySelectorAll('.ni')[7]);setBni('bn-approvals')">
+      <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Approvals
+    </button>
+    <button class="bni" id="bn-reports" onclick="go('reports',document.querySelectorAll('.ni')[6]);setBni('bn-reports')">
+      <svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>Reports
+    </button>
+    <button class="bni" id="bn-more" onclick="openSb()">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg>More
+    </button>
+  </div>
+</nav>
 
 <!-- AI BUTTON -->
 <button class="ai-btn" id="aiBtn" onclick="toggleAI()" title="Contract AI Assistant">
@@ -532,14 +710,11 @@ tbody tr:hover td{background:var(--b3);cursor:pointer}
 <div class="ai-panel" id="aiPanel">
   <div class="ai-hd">
     <div class="ai-hd-dot"></div>
-    <div class="ai-hd-info">
-      <div class="ai-hd-title">Contract Assistant</div>
-      <div class="ai-hd-sub">Powered by Claude AI</div>
-    </div>
+    <div class="ai-hd-info"><div class="ai-hd-title">Contract Assistant</div><div class="ai-hd-sub">Powered by Claude AI</div></div>
     <button class="ai-close" onclick="toggleAI()">&#215;</button>
   </div>
   <div class="ai-msgs" id="aiMsgs">
-    <div class="msg msg-ai"><div class="msg-bubble mb-ai">Hello! I'm your Contract Management Assistant. I can help you understand contract data, explain approval workflows, check compliance requirements, or guide you through adding a new contract. What would you like to know?</div><div class="msg-time">Just now</div></div>
+    <div class="msg msg-ai"><div class="msg-bubble mb-ai">Hello! I'm your Contract Management Assistant. I can help with contract data, approval workflows, compliance requirements, or adding a new contract. What would you like to know?</div><div class="msg-time">Just now</div></div>
   </div>
   <div class="ai-chips" id="aiChips">
     <div class="chip" onclick="askChip('How do I add a new contract?')">Add contract</div>
@@ -559,26 +734,77 @@ tbody tr:hover td{background:var(--b3);cursor:pointer}
 <script>
 const crumbs={dash:' \u00b7 Contract & Project Management \u00b7 FY 2024/25',contracts:' \u00b7 18 contracts registered',detail:' \u00b7 ALA/532/21/MP',reports:' \u00b7 FY 2024/25',approvals:' \u00b7 5 items pending',providers:' \u00b7 4 registered',milestones:' \u00b7 All active contracts',payments:' \u00b7 Payment certificates',variations:' \u00b7 3 pending approval',settings:' \u00b7 System configuration'};
 const titles={dash:'Dashboard',contracts:'Contracts',detail:'Contract Detail',reports:'Reports',approvals:'Approvals',providers:'Service Providers',milestones:'Milestones',payments:'Payments',variations:'Variations',settings:'Settings'};
-function go(id,el){document.querySelectorAll('.sec').forEach(s=>s.classList.remove('on'));document.querySelectorAll('.ni').forEach(n=>n.classList.remove('on'));const s=document.getElementById('s-'+id);if(s)s.classList.add('on');if(el)el.classList.add('on');document.getElementById('ptitle').textContent=titles[id]||id;document.getElementById('pcrumb').textContent=crumbs[id]||'';}
+function go(id,el){
+  document.querySelectorAll('.sec').forEach(s=>s.classList.remove('on'));
+  document.querySelectorAll('.ni').forEach(n=>n.classList.remove('on'));
+  const s=document.getElementById('s-'+id);if(s)s.classList.add('on');
+  if(el)el.classList.add('on');
+  document.getElementById('ptitle').textContent=titles[id]||id;
+  document.getElementById('pcrumb').textContent=crumbs[id]||'';
+  closeSb();
+  window.scrollTo&&document.querySelector('.ct')&&(document.querySelector('.ct').scrollTop=0);
+}
 function showDetail(){go('detail',null);}
 function st(el,id){document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));document.querySelectorAll('.tbc2').forEach(t=>t.style.display='none');el.classList.add('on');document.getElementById(id).style.display='block';}
-function openApproval(){show('apModal');}function openForm(){show('formModal');}
+function openApproval(){show('apModal');}
+function openForm(){show('formModal');}
 function show(id){document.getElementById('ov').style.display='block';document.getElementById(id).style.display='block';}
 function closeAll(){document.getElementById('ov').style.display='none';document.querySelectorAll('.modal').forEach(m=>m.style.display='none');}
+function openSb(){document.getElementById('sb').classList.add('open');document.getElementById('sbOv').classList.add('open');}
+function closeSb(){document.getElementById('sb').classList.remove('open');document.getElementById('sbOv').classList.remove('open');}
+function setBni(id){document.querySelectorAll('.bni').forEach(b=>b.classList.remove('on'));const el=document.getElementById(id);if(el)el.classList.add('on');}
 function doApproval(){closeAll();showToast('\u2713 Approval request submitted to T. Nkosi (Level 2)');}
 function showToast(msg,dur=3200){const t=document.getElementById('toast');t.textContent=msg;t.style.display='block';setTimeout(()=>t.style.display='none',dur);}
 let contractCount=18;
-function saveContract(){const n=document.getElementById('fName').value.trim(),no=document.getElementById('fNo').value.trim(),t=document.getElementById('fType').value,v=document.getElementById('fVal').value,s=document.getElementById('fStart').value,e=document.getElementById('fEnd').value,st2=document.getElementById('fStatus').value,p=document.getElementById('fProv').value,err=document.getElementById('formErr');if(!n||!no||!t||!v||!s||!e||!st2||!p){err.style.display='flex';return;}err.style.display='none';contractCount++;document.getElementById('ctCount').textContent=contractCount;document.getElementById('allCt').textContent=contractCount;const val=parseFloat(v),valStr=val>=1000000?'R '+(val/1000000).toFixed(1)+'M':val>=1000?'R '+(val/1000).toFixed(0)+'K':'R '+val;const sm={Draft:'pf',Active:'pa',Pending:'pp',Suspended:'pe',Terminated:'pe'};const cls=sm[st2]||'pf';const row=`<tr onclick="showDetail()"><td><div style="font-weight:600;font-size:12px">${n}</div><div style="font-size:11px;color:var(--t4)">${document.getElementById('fFund').value||'\u2014'} \u00b7 ${document.getElementById('fDist').value||'\u2014'}</div></td><td style="font-size:11.5px;color:var(--t3)">${no}</td><td>${p}</td><td style="font-weight:600">${valStr}</td><td style="font-size:11.5px">${e}</td><td><div class="pgw" style="width:80px"><div class="pg pgr" style="width:0%"></div></div><div style="font-size:10.5px;color:var(--t4);margin-top:2px">0%</div></td><td><span class="pill ${cls}">${st2}</span></td></tr>`;document.getElementById('ctTable').insertAdjacentHTML('afterbegin',row);const dr=`<tr onclick="showDetail()"><td><div style="font-weight:600;font-size:12px">${no}</div><div style="font-size:11px;color:var(--t4)">${n.length>30?n.substring(0,30)+'...':n}</div></td><td>${p}</td><td style="font-weight:600">${valStr}</td><td><span class="pill ${cls}">${st2}</span></td></tr>`;document.getElementById('dashTable').insertAdjacentHTML('afterbegin',dr);closeAll();['fName','fNo','fProj','fVal','fVar','fExt','fStart','fEnd','fDesc','fRem'].forEach(id2=>{const el=document.getElementById(id2);if(el)el.value='';});['fType','fStatus','fProv','fFund','fDist'].forEach(id2=>{const el=document.getElementById(id2);if(el)el.value='';});document.getElementById('fRet').checked=false;showToast('\u2713 Contract "'+n+'" added successfully');go('contracts',document.querySelectorAll('.ni')[1]);}
+function saveContract(){
+  const n=document.getElementById('fName').value.trim(),no=document.getElementById('fNo').value.trim(),t=document.getElementById('fType').value,v=document.getElementById('fVal').value,s=document.getElementById('fStart').value,e=document.getElementById('fEnd').value,st2=document.getElementById('fStatus').value,p=document.getElementById('fProv').value,err=document.getElementById('formErr');
+  if(!n||!no||!t||!v||!s||!e||!st2||!p){err.style.display='flex';return;}
+  err.style.display='none';contractCount++;
+  document.getElementById('ctCount').textContent=contractCount;
+  document.getElementById('allCt').textContent=contractCount;
+  const val=parseFloat(v),valStr=val>=1000000?'R '+(val/1000000).toFixed(1)+'M':val>=1000?'R '+(val/1000).toFixed(0)+'K':'R '+val;
+  const sm={Draft:'pf',Active:'pa',Pending:'pp',Suspended:'pe',Terminated:'pe'};const cls=sm[st2]||'pf';
+  const fund=document.getElementById('fFund').value||'\u2014',dist=document.getElementById('fDist').value||'\u2014';
+  // add to desktop table
+  const row=`<tr onclick="showDetail()"><td><div style="font-weight:600;font-size:12px">${n}</div><div style="font-size:11px;color:var(--t4)">${fund} \u00b7 ${dist}</div></td><td style="font-size:11px;color:var(--t3)">${no}</td><td style="font-weight:600">${valStr}</td><td style="font-size:11px">${e}</td><td><div class="pgw" style="width:70px"><div class="pg pgr" style="width:0%"></div></div><div style="font-size:10px;color:var(--t4);margin-top:2px">0%</div></td><td><span class="pill ${cls}">${st2}</span></td></tr>`;
+  document.getElementById('ctTable').insertAdjacentHTML('afterbegin',row);
+  // add to mobile card list
+  const mrow=`<div class="mc-row" onclick="showDetail()"><div class="mc-top"><div><div class="mc-title">${n}</div><div class="mc-sub">${no} \u00b7 ${fund} \u00b7 ${p}</div></div><span class="pill ${cls}">${st2}</span></div><div class="mc-meta"><span class="mc-val">${valStr}</span><span class="mc-info">${dist}</span></div></div>`;
+  document.getElementById('ctMcard').insertAdjacentHTML('afterbegin',mrow);
+  // add to dashboard
+  const dr=`<tr onclick="showDetail()"><td><div style="font-weight:600;font-size:12px">${no}</div><div style="font-size:11px;color:var(--t4)">${n.length>28?n.substring(0,28)+'...':n}</div></td><td>${p}</td><td style="font-weight:600">${valStr}</td><td><span class="pill ${cls}">${st2}</span></td></tr>`;
+  document.getElementById('dashTable').insertAdjacentHTML('afterbegin',dr);
+  const dm=`<div class="mc-row" onclick="showDetail()"><div class="mc-top"><div><div class="mc-title">${no}</div><div class="mc-sub">${n.length>30?n.substring(0,30)+'...':n}</div></div><span class="pill ${cls}">${st2}</span></div><div class="mc-meta"><span class="mc-val">${valStr}</span><span class="mc-info">${p}</span></div></div>`;
+  document.getElementById('dashMcard').insertAdjacentHTML('afterbegin',dm);
+  closeAll();
+  ['fName','fNo','fProj','fVal','fVar','fExt','fStart','fEnd','fDesc','fRem'].forEach(id2=>{const el=document.getElementById(id2);if(el)el.value='';});
+  ['fType','fStatus','fProv','fFund','fDist'].forEach(id2=>{const el=document.getElementById(id2);if(el)el.value='';});
+  document.getElementById('fRet').checked=false;
+  showToast('\u2713 Contract "'+n+'" added successfully');
+  go('contracts',document.querySelectorAll('.ni')[1]);
+  setBni('bn-contracts');
+}
 let aiOpen=false;
 function toggleAI(){aiOpen=!aiOpen;document.getElementById('aiPanel').classList.toggle('open',aiOpen);}
-const aiR={add:'To add a new contract, click <strong>+ New Contract</strong> in the top-right corner. The form requires: Contract Name, Number, Project Number, Type, Value, Start and End dates, Status, and Service Provider. All fields marked * are mandatory. Once saved, the contract immediately appears in the register and on the dashboard.',expir:'Based on current data, <strong>3 contracts</strong> are expiring within 30 days:\n\u2022 ALA/532/21/MP \u2014 Solar Install (14 days)\n\u2022 ALA/301/22/MP \u2014 Fencing (18 days)\n\u2022 ALA/488/23/MP \u2014 Irrigation (28 days)\n\nSubmit extension requests now to allow time for the multi-level approval process.',approv:'The approval workflow is multi-level:\n<strong>Level 1</strong> \u2014 District Manager (auto-approves routine items)\n<strong>Level 2</strong> \u2014 Chief Engineer (reviews scope and financial changes)\n<strong>Level 3</strong> \u2014 Director (signs off high-value decisions)\n\nAll contract actions (status changes, extensions, variations, milestone payments) route through this chain with full audit timestamps.',payment:'To process a milestone payment:\n1. Open the contract and go to the <strong>Milestones</strong> tab\n2. Confirm the milestone is marked complete\n3. Go to <strong>Payments</strong> tab and add a Payment Certificate\n4. Attach proof of completion and invoice\n5. Submit for approval \u2014 routes to Level 2\n\nNote: payments are blocked if there are unresolved variations on that milestone.',def:'That\'s a great question. The system currently manages 18 contracts with a total portfolio value of R47.2M across Ehlanzeni, Gert Sibande, and Nkangala districts. Real-time tracking covers milestones, variations, payments, and approvals. Is there a specific contract or process you\'d like me to help with?'};
+const aiR={
+  add:'To add a new contract, tap <strong>+ New</strong> in the top bar. The form requires: Contract Name, Number, Project Number, Type, Value, Start/End dates, Status, and Service Provider. Fields marked * are mandatory. Once saved the contract appears immediately in the register.',
+  expir:'<strong>3 contracts</strong> are expiring within 30 days:\n\u2022 ALA/532/21/MP \u2014 Solar Install (14 days)\n\u2022 ALA/301/22/MP \u2014 Fencing (18 days)\n\u2022 ALA/488/23/MP \u2014 Irrigation (28 days)\n\nSubmit extension requests now to allow time for multi-level approval.',
+  approv:'The approval workflow is multi-level:\n<strong>Level 1</strong> \u2014 District Manager\n<strong>Level 2</strong> \u2014 Chief Engineer\n<strong>Level 3</strong> \u2014 Director\n\nAll contract actions (status changes, extensions, variations, milestone payments) route through this chain with full audit timestamps.',
+  payment:'To process a milestone payment:\n1. Open the contract \u2192 Milestones tab\n2. Confirm the milestone is complete\n3. Go to Payments tab \u2192 add Payment Certificate\n4. Attach proof of completion and invoice\n5. Submit for approval \u2014 routes to Level 2\n\nPayments are blocked if there are unresolved variations on that milestone.',
+  def:'The system currently manages 18 contracts with a total portfolio value of R47.2M across Ehlanzeni, Gert Sibande, and Nkangala districts. Real-time tracking covers milestones, variations, payments, and approvals. Is there a specific contract or process you\'d like help with?'
+};
 function getR(msg){const m=msg.toLowerCase();if(m.includes('add')||m.includes('new')||m.includes('create'))return aiR.add;if(m.includes('expir')||m.includes('soon')||m.includes('deadline'))return aiR.expir;if(m.includes('approv')||m.includes('workflow')||m.includes('level'))return aiR.approv;if(m.includes('payment')||m.includes('milestone')||m.includes('certif'))return aiR.payment;return aiR.def;}
-function addMsg(text,isUser){const box=document.getElementById('aiMsgs'),now=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'}),d=document.createElement('div');d.className='msg '+(isUser?'msg-user':'msg-ai');const f=text.replace(/\n/g,'<br>');d.innerHTML=`<div class="msg-bubble ${isUser?'mb-user':'mb-ai'}">${f}</div><div class="msg-time">${now}</div>`;box.appendChild(d);box.scrollTop=box.scrollHeight;}
+function addMsg(text,isUser){const box=document.getElementById('aiMsgs'),now=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'}),d=document.createElement('div');d.className='msg '+(isUser?'msg-user':'msg-ai');d.innerHTML=`<div class="msg-bubble ${isUser?'mb-user':'mb-ai'}">${text.replace(/\n/g,'<br>')}</div><div class="msg-time">${now}</div>`;box.appendChild(d);box.scrollTop=box.scrollHeight;}
 function addTyping(){const box=document.getElementById('aiMsgs'),d=document.createElement('div');d.className='msg msg-ai';d.id='typing';d.innerHTML='<div class="typing"><span></span><span></span><span></span></div>';box.appendChild(d);box.scrollTop=box.scrollHeight;}
 function removeTyping(){const t=document.getElementById('typing');if(t)t.remove();}
 function sendAI(){const inp=document.getElementById('aiInput'),msg=inp.value.trim();if(!msg)return;inp.value='';document.getElementById('aiChips').style.display='none';addMsg(msg,true);addTyping();setTimeout(()=>{removeTyping();addMsg(getR(msg),false);},800+Math.random()*600);}
 function askChip(msg){document.getElementById('aiChips').style.display='none';addMsg(msg,true);addTyping();setTimeout(()=>{removeTyping();addMsg(getR(msg),false);},800+Math.random()*500);}
-window.addEventListener('load',()=>{if(!window.Chart)return;new Chart(document.getElementById('c1'),{type:'doughnut',data:{labels:['Irrigation','Solar','Borehole','Fencing','Other'],datasets:[{data:[18.4,12.6,9.2,4.8,2.2],backgroundColor:['#1B5E42','#3B82F6','#F59E0B','#EC4899','#8B5CF6'],borderWidth:2,borderColor:'#fff'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},cutout:'62%'}});new Chart(document.getElementById('c2'),{type:'bar',data:{labels:['May','Jun','Jul','Aug','Sep','Oct'],datasets:[{data:[810,0,2100,380,0,1600],backgroundColor:'#1B5E42',borderRadius:4,borderSkipped:false}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{ticks:{callback:v=>'R'+v+'K',font:{size:10}},grid:{color:'rgba(0,0,0,0.04)'}},x:{grid:{display:false},ticks:{font:{size:10}}}}}});new Chart(document.getElementById('c3'),{type:'doughnut',data:{labels:['Active','Pending','Expired','Completed'],datasets:[{data:[12,3,2,4],backgroundColor:['#1B5E42','#F59E0B','#EF4444','#3B82F6'],borderWidth:2,borderColor:'#fff'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},cutout:'60%'}});});
+window.addEventListener('load',()=>{
+  if(!window.Chart)return;
+  new Chart(document.getElementById('c1'),{type:'doughnut',data:{labels:['Irrigation','Solar','Borehole','Fencing','Other'],datasets:[{data:[18.4,12.6,9.2,4.8,2.2],backgroundColor:['#1B5E42','#3B82F6','#F59E0B','#EC4899','#8B5CF6'],borderWidth:2,borderColor:'#fff'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},cutout:'62%'}});
+  new Chart(document.getElementById('c2'),{type:'bar',data:{labels:['May','Jun','Jul','Aug','Sep','Oct'],datasets:[{data:[810,0,2100,380,0,1600],backgroundColor:'#1B5E42',borderRadius:4,borderSkipped:false}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{ticks:{callback:v=>'R'+v+'K',font:{size:10}},grid:{color:'rgba(0,0,0,0.04)'}},x:{grid:{display:false},ticks:{font:{size:10}}}}}});
+  new Chart(document.getElementById('c3'),{type:'doughnut',data:{labels:['Active','Pending','Expired','Completed'],datasets:[{data:[12,3,2,4],backgroundColor:['#1B5E42','#F59E0B','#EF4444','#3B82F6'],borderWidth:2,borderColor:'#fff'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},cutout:'60%'}});
+});
 </script>
 </body>
 </html>
